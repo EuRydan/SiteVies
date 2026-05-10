@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -16,6 +17,7 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
   const { scrollYProgress } = useScroll();
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -60,16 +62,45 @@ export default function Navbar() {
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="font-inter text-sm text-text-secondary hover:text-text-primary transition-colors duration-300 relative group"
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent transition-all duration-300 group-hover:w-full" />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href + "/"));
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  style={{
+                    color: isActive ? "#FF5A1A" : "rgba(245,241,236,0.55)",
+                    fontSize: "14px",
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: isActive ? 500 : 400,
+                    textDecoration: "none",
+                    position: "relative",
+                    paddingBottom: "2px",
+                    transition: "color 0.2s",
+                  }}
+                  className="hover:text-text-primary transition-colors duration-300 relative group"
+                >
+                  {link.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="navUnderline"
+                      style={{
+                        position: "absolute",
+                        bottom: "-2px",
+                        left: 0,
+                        right: 0,
+                        height: "1px",
+                        background: "#FF5A1A",
+                        borderRadius: "1px",
+                      }}
+                    />
+                  )}
+                  {!isActive && (
+                    <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent transition-all duration-300 group-hover:w-full" />
+                  )}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Desktop CTA — ghost button with clip-path */}

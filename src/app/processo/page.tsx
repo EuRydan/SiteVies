@@ -99,15 +99,17 @@ export default function ProcessoPage() {
   const timelineInView = useInView(timelineRef, { once: true, margin: "-100px" });
 
   return (
-    <div className="pt-32 pb-20">
+    <div className="pt-32 pb-20 overflow-visible">
       {/* Hero */}
-      <section className="max-w-7xl mx-auto section-padding mb-24">
+      <section className="max-w-7xl mx-auto section-padding mb-24 overflow-visible">
         <SectionLabel text="COMO TRABALHAMOS" />
-        <AnimatedText
-          text="Como transformamos um briefing em resultado."
-          tag="h1"
-          className="font-sora font-extrabold text-[40px] md:text-[56px] lg:text-hero leading-[1.0] tracking-[-0.03em] text-text-primary mb-6"
-        />
+        <div className="overflow-visible pb-2">
+          <AnimatedText
+            text="Como transformamos um briefing em resultado."
+            tag="h1"
+            className="font-sora font-extrabold text-[40px] md:text-[56px] lg:text-hero leading-[1.0] tracking-[-0.03em] text-text-primary mb-6 overflow-visible"
+          />
+        </div>
         <ScrollReveal>
           <p className="font-inter font-light text-body text-text-secondary max-w-2xl">
             Um processo claro, previsível e transparente. Cada fase tem entregáveis
@@ -117,10 +119,19 @@ export default function ProcessoPage() {
       </section>
 
       {/* Timeline */}
-      <section className="max-w-4xl mx-auto section-padding mb-32" ref={timelineRef}>
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-8 md:left-12 top-0 bottom-0 w-[1px] bg-border-subtle">
+      <section className="max-w-4xl mx-auto section-padding mb-32 overflow-visible" ref={timelineRef}>
+        <div style={{ position: "relative", paddingLeft: "60px" }} className="overflow-visible">
+          {/* Linha vertical — posicionada no centro do círculo */}
+          <div
+            style={{
+              position: "absolute",
+              left: "28px", /* metade da largura do círculo (56px / 2 = 28px) ajustado ao offset */
+              top: "0",
+              bottom: "0",
+              width: "1px",
+              background: "rgba(255,90,26,0.20)",
+            }}
+          >
             <motion.div
               className="w-full bg-accent origin-top"
               initial={{ scaleY: 0 }}
@@ -130,19 +141,60 @@ export default function ProcessoPage() {
             />
           </div>
 
-          <div className="space-y-16">
+          <div className="overflow-visible">
             {steps.map((step, i) => (
               <ScrollReveal key={step.num} delay={i * 0.15} direction="left">
-                <div className="relative pl-20 md:pl-28">
-                  {/* Number */}
-                  <div className="absolute left-0 top-0 w-16 md:w-24 h-16 md:h-24 flex items-center justify-center">
-                    <span className="font-mono text-[60px] md:text-[80px] font-bold text-accent opacity-[0.15] leading-none select-none">
+                <div
+                  style={{
+                    position: "relative",
+                    display: "flex",
+                    gap: "32px",
+                    marginBottom: "64px",
+                    alignItems: "flex-start",
+                  }}
+                  className="overflow-visible"
+                >
+                  {/* Número + círculo — container com largura fixa */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: "-60px", /* puxa para fora do paddingLeft */
+                      top: "0",
+                      width: "56px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "4px",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {/* Número watermark */}
+                    <span
+                      style={{
+                        fontFamily: "JetBrains Mono, monospace",
+                        fontSize: "11px",
+                        color: "rgba(255,90,26,0.50)",
+                        letterSpacing: "0.08em",
+                      }}
+                    >
                       {step.num}
                     </span>
-                    <div className="absolute left-[30px] md:left-[46px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-accent z-10" />
+
+                    {/* Círculo — centralizado no eixo da linha */}
+                    <div
+                      style={{
+                        width: "12px",
+                        height: "12px",
+                        borderRadius: "50%",
+                        background: "#FF5A1A",
+                        boxShadow:
+                          "0 0 0 4px rgba(255,90,26,0.12), 0 0 12px rgba(255,90,26,0.3)",
+                        flexShrink: 0,
+                      }}
+                    />
                   </div>
 
-                  {/* Content */}
+                  {/* Conteúdo do step */}
                   <div>
                     <h3 className="font-sora font-bold text-[24px] text-text-primary mb-3">
                       {step.title}
