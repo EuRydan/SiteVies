@@ -8,6 +8,7 @@ import {
   useTransform,
   useScroll,
   useMotionValueEvent,
+  MotionValue,
 } from "framer-motion";
 import Link from "next/link";
 import { Layout, Monitor, Settings, ArrowRight } from "lucide-react";
@@ -474,18 +475,16 @@ function ServicesSection() {
 }
 
 /* ──────────────── PROCESSO — SCROLL-DRIVEN TIMELINE ──────────────── */
-function ProcessSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+interface ProcessSectionProps {
+  scrollProgress: MotionValue<number>;
+}
+
+function ProcessSection({ scrollProgress }: ProcessSectionProps) {
   const [activeStep, setActiveStep] = useState(0);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 75%", "end 25%"],
-  });
+  const lineScaleX = useTransform(scrollProgress, [0, 1], [0, 1]);
 
-  const lineScaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
+  useMotionValueEvent(scrollProgress, "change", (v) => {
     if (v < 0.15) setActiveStep(0);
     else if (v < 0.35) setActiveStep(1);
     else if (v < 0.55) setActiveStep(2);
@@ -502,16 +501,13 @@ function ProcessSection() {
   ];
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative py-32 section-padding section-divider"
-    >
-      <div className="mb-20">
+    <section className="w-full relative py-12 section-padding overflow-visible">
+      <div className="mb-12 md:mb-20">
         <SectionLabel text="PROCESSO" />
         <h2
           className="font-sora font-bold text-text-primary"
           style={{
-            fontSize: "clamp(36px, 5vw, 52px)",
+            fontSize: "clamp(32px, 5vw, 52px)",
             lineHeight: 1.1,
             letterSpacing: "-0.02em",
           }}
@@ -521,12 +517,12 @@ function ProcessSection() {
       </div>
 
       {/* Timeline */}
-      <div className="relative">
+      <div className="relative w-full max-w-6xl mx-auto">
         {/* Track base */}
         <div
           className="absolute hidden md:block"
           style={{
-            top: "10px",
+            top: "8px",
             left: "0",
             right: "0",
             height: "1px",
@@ -538,7 +534,7 @@ function ProcessSection() {
         <motion.div
           className="absolute hidden md:block"
           style={{
-            top: "10px",
+            top: "8px",
             left: "0",
             right: "0",
             height: "1px",
@@ -549,69 +545,98 @@ function ProcessSection() {
           }}
         />
 
-        {/* Steps */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 relative">
-          {steps.map((step, i) => {
-            const isActive = i <= activeStep;
-
-            return (
+        {/* Steps Grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
+            gap: "8px",
+            width: "100%",
+            maxWidth: "100%",
+          }}
+        >
+          {steps.map((step, i) => (
+            <motion.div
+              key={step.num}
+              animate={{ opacity: i <= activeStep ? 1 : 0.25 }}
+              transition={{ duration: 0.3 }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textAlign: "center",
+                padding: "0 4px",
+                minWidth: 0,
+              }}
+            >
+              {/* Ponto */}
               <motion.div
-                key={step.num}
-                animate={{ opacity: isActive ? 1 : 0.25 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="flex flex-col items-center text-center"
-              >
-                {/* Dot */}
-                <motion.div
-                  animate={{
-                    background: isActive ? "#FF5A1A" : "rgba(255,255,255,0.15)",
-                    boxShadow: isActive
+                animate={{
+                  background: i <= activeStep ? "#FF5A1A" : "rgba(255,255,255,0.15)",
+                  boxShadow:
+                    i <= activeStep
                       ? "0 0 0 4px rgba(255,90,26,0.15), 0 0 12px rgba(255,90,26,0.4)"
                       : "none",
-                    scale: isActive ? 1.2 : 1,
-                  }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="hidden md:block mb-4 flex-shrink-0"
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    borderRadius: "50%",
-                    border: isActive ? "none" : "1px solid rgba(255,255,255,0.15)",
-                  }}
-                />
+                  scale: i <= activeStep ? 1.2 : 1,
+                }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  width: "16px",
+                  height: "16px",
+                  borderRadius: "50%",
+                  marginBottom: "12px",
+                  flexShrink: 0,
+                }}
+              />
 
-                <span
-                  className="font-mono text-label tracking-[0.10em] mb-2"
-                  style={{
-                    color: isActive ? "#FF5A1A" : "rgba(245,241,236,0.30)",
-                    transition: "color 0.3s",
-                  }}
-                >
-                  {step.num}
-                </span>
-                <span
-                  className="font-sora font-semibold text-[16px] mb-1.5"
-                  style={{
-                    color: isActive ? "#F5F1EC" : "rgba(245,241,236,0.30)",
-                    transition: "color 0.3s",
-                  }}
-                >
-                  {step.title}
-                </span>
-                <span
-                  className="font-inter font-light text-[13px] leading-relaxed max-w-[120px]"
-                  style={{
-                    color: isActive
-                      ? "rgba(245,241,236,0.55)"
-                      : "rgba(245,241,236,0.18)",
-                    transition: "color 0.3s",
-                  }}
-                >
-                  {step.desc}
-                </span>
-              </motion.div>
-            );
-          })}
+              {/* Número */}
+              <span
+                style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  fontSize: "10px",
+                  letterSpacing: "0.10em",
+                  color: i <= activeStep ? "#FF5A1A" : "rgba(245,241,236,0.25)",
+                  marginBottom: "6px",
+                  transition: "color 0.3s",
+                }}
+              >
+                {step.num}
+              </span>
+
+              {/* Título */}
+              <span
+                style={{
+                  fontFamily: "Sora, sans-serif",
+                  fontSize: "clamp(12px, 1.5vw, 16px)",
+                  fontWeight: 600,
+                  color: i <= activeStep ? "#F5F1EC" : "rgba(245,241,236,0.25)",
+                  marginBottom: "4px",
+                  transition: "color 0.3s",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {step.title}
+              </span>
+
+              {/* Descrição */}
+              <span
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 300,
+                  fontSize: "clamp(10px, 1vw, 13px)",
+                  color: i <= activeStep
+                    ? "rgba(245,241,236,0.55)"
+                    : "rgba(245,241,236,0.15)",
+                  lineHeight: 1.5,
+                  transition: "color 0.3s",
+                  wordBreak: "break-word",
+                  minWidth: 0,
+                }}
+              >
+                {step.desc}
+              </span>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -730,13 +755,35 @@ function CTASection() {
 
 /* ──────────────── HOME PAGE ──────────────── */
 export default function HomePage() {
+  const processRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: processProgress } = useScroll({
+    target: processRef,
+    offset: ["start start", "end end"],
+  });
+
   return (
     <>
       <HeroSection />
       <MarqueeTicker />
       <ProblemSection />
       <ServicesSection />
-      <ProcessSection />
+
+      {/* Wrapper sticky — altura define quanto tempo a tela fica "presa" */}
+      <div ref={processRef} style={{ height: "300vh", position: "relative" }}>
+        <div
+          style={{
+            position: "sticky",
+            top: "0",
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            overflow: "hidden",
+          }}
+        >
+          <ProcessSection scrollProgress={processProgress} />
+        </div>
+      </div>
+
       <CasesSection />
       <CTASection />
     </>
