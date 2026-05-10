@@ -121,7 +121,7 @@ export default function ContatoPage() {
       <section className="max-w-7xl mx-auto section-padding mb-16">
         <SectionLabel text="CONTATO" />
         <AnimatedText
-          text="Start a Dialogue."
+          text="Vamos conversar."
           tag="h1"
           className="font-sora font-extrabold text-[40px] md:text-[56px] lg:text-hero leading-[1.0] tracking-[-0.03em] text-text-primary mb-6"
         />
