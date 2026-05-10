@@ -70,13 +70,12 @@ function MetricCard({ label, value, sub, delay }: MetricCardProps) {
         border: "1px solid rgba(255,255,255,0.06)",
         borderTop: "1px solid rgba(255,255,255,0.10)",
         borderRadius: "2px",
-        padding: "20px 24px",
-        width: "220px",
+        padding: "clamp(16px, 2vw, 24px)",
+        width: "clamp(180px, 20vw, 220px)",
         cursor: "default",
         willChange: "transform",
       }}
     >
-      {/* Reflexo de luz que segue o mouse dentro do card */}
       <motion.div
         style={{
           position: "absolute",
@@ -90,67 +89,14 @@ function MetricCard({ label, value, sub, delay }: MetricCardProps) {
           pointerEvents: "none",
         }}
       />
-
-      {/* Cantos decorativos — elevados no z */}
-      <span
-        style={{
-          position: "absolute",
-          top: "-1px",
-          left: "-1px",
-          width: "10px",
-          height: "10px",
-          borderTop: "2px solid rgba(255,90,26,0.5)",
-          borderLeft: "2px solid rgba(255,90,26,0.5)",
-          transform: "translateZ(4px)",
-        }}
-      />
-      <span
-        style={{
-          position: "absolute",
-          bottom: "-1px",
-          right: "-1px",
-          width: "10px",
-          height: "10px",
-          borderBottom: "2px solid rgba(255,90,26,0.5)",
-          borderRight: "2px solid rgba(255,90,26,0.5)",
-          transform: "translateZ(4px)",
-        }}
-      />
-
-      {/* Conteúdo elevado na frente */}
       <div style={{ transform: "translateZ(12px)" }}>
-        <p
-          style={{
-            fontFamily: "JetBrains Mono, monospace",
-            fontSize: "10px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "rgba(245,241,236,0.30)",
-            marginBottom: "8px",
-          }}
-        >
+        <p className="font-mono text-label text-text-tertiary mb-2 uppercase">
           {label}
         </p>
-        <p
-          style={{
-            fontFamily: "Sora, sans-serif",
-            fontSize: "28px",
-            fontWeight: 700,
-            color: "#FF5A1A",
-            lineHeight: 1,
-            marginBottom: "4px",
-          }}
-        >
+        <p className="font-sora font-bold text-accent text-3xl leading-none mb-1">
           {value}
         </p>
-        <p
-          style={{
-            fontFamily: "Inter, sans-serif",
-            fontWeight: 300,
-            fontSize: "13px",
-            color: "rgba(245,241,236,0.45)",
-          }}
-        >
+        <p className="font-inter font-light text-xs text-text-secondary whitespace-nowrap">
           {sub}
         </p>
       </div>
@@ -161,16 +107,15 @@ function MetricCard({ label, value, sub, delay }: MetricCardProps) {
 /* ──────────────── HERO ──────────────── */
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-visible pt-20 section-padding">
-      {/* Camada 0: Estático glow */}
+    <section className="relative min-h-[90vh] lg:min-h-screen flex items-center overflow-visible pt-24 lg:pt-20 section-padding">
       <div
         aria-hidden="true"
         style={{
           position: "absolute",
           top: "10%",
           right: "5%",
-          width: "700px",
-          height: "500px",
+          width: "clamp(300px, 50vw, 700px)",
+          height: "clamp(300px, 40vw, 500px)",
           background:
             "radial-gradient(ellipse at center, rgba(255,90,26,0.09) 0%, transparent 65%)",
           filter: "blur(40px)",
@@ -178,54 +123,33 @@ function HeroSection() {
         }}
       />
 
-      {/* Grid container */}
-      <div className="relative w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center overflow-visible">
-        {/* Left column */}
-        <div className="flex flex-col gap-6 overflow-visible">
-          {/* Label */}
-          <div className="overflow-visible">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.4 }}
-            >
-              <SectionLabel text="AGÊNCIA DE CRIAÇÃO DIGITAL // PREMIUM" />
-            </motion.div>
-          </div>
+      <div className="relative w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center overflow-visible">
+        <div className="lg:col-span-7 flex flex-col gap-6 lg:gap-8 overflow-visible">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.4 }}
+          >
+            <SectionLabel text="AGÊNCIA DE CRIAÇÃO DIGITAL // PREMIUM" />
+          </motion.div>
 
-          {/* H1 */}
-          <div className="overflow-visible">
-            <h1
-              className="font-sora font-bold text-text-primary leading-[1.02] tracking-[-0.03em] overflow-visible"
-              style={{
-                fontSize: "clamp(40px, 6vw, 76px)",
-                paddingBottom: "0.12em",
-              }}
+          <h1 className="font-sora font-bold text-hero text-text-primary overflow-visible">
+            <motion.span
+              initial={{ opacity: 0, y: 40, clipPath: "inset(100% 0 0 0)" }}
+              animate={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+              transition={{ delay: 0.6, duration: 0.8, type: "spring", damping: 20 }}
+              className="block overflow-visible pb-2"
             >
-              <motion.span
-                initial={{ opacity: 0, y: 40, clipPath: "inset(100% 0 0 0)" }}
-                animate={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-                transition={{
-                  delay: 0.6,
-                  duration: 0.8,
-                  type: "spring" as const,
-                  damping: 20,
-                  stiffness: 100,
-                }}
-                className="block overflow-visible"
-              >
-                Seu próximo site deveria ser uma declaração.
-              </motion.span>
-            </h1>
-          </div>
+              Seu próximo site deveria ser uma declaração.
+            </motion.span>
+          </h1>
 
-          {/* Body + CTAs */}
-          <div className="flex flex-col gap-8 overflow-visible">
+          <div className="flex flex-col gap-10 overflow-visible">
             <motion.p
               initial={{ opacity: 0, filter: "blur(8px)" }}
               animate={{ opacity: 1, filter: "blur(0px)" }}
               transition={{ delay: 0.9, duration: 0.6 }}
-              className="font-inter font-light text-body text-text-secondary max-w-[480px]"
+              className="font-inter font-light text-body text-text-secondary max-w-[540px] leading-relaxed"
             >
               Criamos websites, aplicações e sistemas que combinam design de alto
               impacto, segurança em profundidade e SEO que realmente posiciona.
@@ -235,26 +159,18 @@ function HeroSection() {
               className="flex items-center gap-4 flex-wrap"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 1.1,
-                type: "spring" as const,
-                stiffness: 100,
-                damping: 15,
-              }}
+              transition={{ delay: 1.1 }}
             >
               <Link
                 href="/contato"
-                className="btn-primary inline-flex items-center gap-2 px-6 py-3.5 text-bg-primary font-inter font-medium text-cta group"
+                className="btn-primary inline-flex items-center gap-2 px-8 py-4 text-bg-primary font-inter font-medium text-cta group"
               >
                 Iniciar projeto
-                <ArrowRight
-                  size={16}
-                  className="transition-transform group-hover:translate-x-1"
-                />
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 href="/cases"
-                className="btn-ghost inline-flex items-center gap-2 px-6 py-3.5 font-inter font-medium text-cta"
+                className="btn-ghost inline-flex items-center gap-2 px-8 py-4 font-inter font-medium text-cta"
               >
                 Ver cases
               </Link>
@@ -262,29 +178,10 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* Right column: Metric cards — with independent 3D tilt */}
-        <div
-          className="flex flex-col gap-3 lg:items-end overflow-visible"
-          style={{ perspective: "1000px" }}
-        >
-          <MetricCard
-            label="LIGHTHOUSE"
-            value="90+"
-            sub="Score garantido"
-            delay={1.3}
-          />
-          <MetricCard
-            label="CORE WEB VITALS"
-            value="✓"
-            sub="Aprovado"
-            delay={1.45}
-          />
-          <MetricCard
-            label="SECURITY GRADE"
-            value="A+"
-            sub="SSL + Headers"
-            delay={1.6}
-          />
+        <div className="lg:col-span-5 flex flex-row lg:flex-col gap-3 flex-wrap lg:items-end justify-center lg:justify-start overflow-visible">
+          <MetricCard label="LIGHTHOUSE" value="90+" sub="Score garantido" delay={1.3} />
+          <MetricCard label="CORE WEB VITALS" value="✓" sub="Aprovado" delay={1.45} />
+          <MetricCard label="SECURITY GRADE" value="A+" sub="SSL + Headers" delay={1.6} />
         </div>
       </div>
     </section>
@@ -296,106 +193,66 @@ function ProblemSection() {
   return (
     <section className="section-gap relative z-10 section-divider">
       <div className="max-w-7xl mx-auto section-padding">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <div className="max-w-xl">
             <SectionLabel text="O PROBLEMA" />
             <AnimatedText
               text="A maioria dos sites são caros e lentos."
               tag="h2"
-              className="font-sora font-bold text-section text-text-primary mb-6"
+              className="font-sora font-bold text-section text-text-primary mb-8"
             />
             <ScrollReveal delay={0.2}>
               <p className="font-inter font-light text-body text-text-secondary">
                 Agências cobram premium e entregam WordPress lento, sem SEO real,
                 sem segurança e sem estratégia. Nós fazemos diferente — e você pode
-                medir isso.
+                medir isso em cada byte.
               </p>
             </ScrollReveal>
           </div>
 
-          <div className="flex flex-col gap-6">
-            {/* Bad card */}
+          <div className="flex flex-col gap-6 w-full max-w-lg lg:ml-auto">
             <ScrollReveal direction="right" delay={0.1}>
-              <div
-                className="tech-card bg-[rgba(255,60,60,0.04)] p-6"
-                style={{
-                  borderColor: "rgba(255,60,60,0.25)",
-                  borderTopColor: "rgba(255,60,60,0.35)",
-                }}
-              >
-                <div className="flex items-center gap-2 mb-4">
+              <div className="tech-card bg-[rgba(255,60,60,0.04)] p-8 border-[rgba(255,60,60,0.2)]">
+                <div className="flex items-center gap-2 mb-6">
                   <div className="w-2 h-2 rounded-full bg-[rgba(255,60,60,0.6)]" />
-                  <span className="font-mono text-label uppercase text-[rgba(255,60,60,0.6)] tracking-[0.12em]">
+                  <span className="font-mono text-label uppercase text-[rgba(255,60,60,0.6)]">
                     SITE COMUM
                   </span>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">
-                      Lighthouse
-                    </span>
-                    <span className="font-sora font-bold text-[rgba(255,60,60,0.8)]">
-                      48
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">
-                      Segurança
-                    </span>
-                    <span className="font-inter text-sm text-[rgba(255,60,60,0.8)]">
-                      Sem SSL
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">
-                      SEO
-                    </span>
-                    <span className="font-inter text-sm text-[rgba(255,60,60,0.8)]">
-                      Sem SEO
-                    </span>
-                  </div>
+                <div className="space-y-4">
+                  {[
+                    { l: "Lighthouse", v: "48", c: "text-[rgba(255,60,60,0.8)]" },
+                    { l: "Segurança", v: "Sem SSL", c: "text-[rgba(255,60,60,0.8)]" },
+                    { l: "SEO", v: "Básico/Nulo", c: "text-[rgba(255,60,60,0.8)]" },
+                  ].map((row) => (
+                    <div key={row.l} className="flex justify-between items-center border-b border-white/[0.03] pb-2">
+                      <span className="font-mono text-xs text-text-tertiary">{row.l}</span>
+                      <span className={`font-sora font-bold ${row.c}`}>{row.v}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </ScrollReveal>
 
-            {/* Good card */}
             <ScrollReveal direction="right" delay={0.3}>
-              <div
-                className="glow-card corner-decoration bg-bg-card p-6"
-                style={{
-                  borderColor: "rgba(255,90,26,0.3)",
-                  borderTopColor: "rgba(255,90,26,0.5)",
-                }}
-              >
-                <div className="flex items-center gap-2 mb-4">
+              <div className="glow-card corner-decoration bg-bg-card p-8 border-accent/20">
+                <div className="flex items-center gap-2 mb-6">
                   <div className="w-2 h-2 rounded-full bg-accent" />
-                  <span className="font-mono text-label uppercase text-accent tracking-[0.12em]">
+                  <span className="font-mono text-label uppercase text-accent">
                     SITE VIÉS
                   </span>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">
-                      Lighthouse
-                    </span>
-                    <span className="font-sora font-bold text-accent">97</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">
-                      Segurança
-                    </span>
-                    <span className="font-inter text-sm text-accent">
-                      A+ Security
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">
-                      SEO
-                    </span>
-                    <span className="font-inter text-sm text-accent">
-                      SEO Técnico
-                    </span>
-                  </div>
+                <div className="space-y-4">
+                  {[
+                    { l: "Lighthouse", v: "97+", c: "text-accent" },
+                    { l: "Segurança", v: "A+ Security", c: "text-accent" },
+                    { l: "SEO", v: "Técnico Real", c: "text-accent" },
+                  ].map((row) => (
+                    <div key={row.l} className="flex justify-between items-center border-b border-white/[0.05] pb-2">
+                      <span className="font-mono text-xs text-text-tertiary">{row.l}</span>
+                      <span className={`font-sora font-bold ${row.c}`}>{row.v}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </ScrollReveal>
@@ -413,19 +270,19 @@ function ServicesSection() {
       icon: Layout,
       title: "Sites & Landing Pages",
       desc: "Sites institucionais, landing pages e e-commerces com SEO técnico e design estratégico.",
-      tags: ["Next.js", "CMS Headless", "Core Web Vitals", "SEO"],
+      tags: ["Next.js", "CMS Headless", "SEO"],
     },
     {
       icon: Monitor,
       title: "Apps & Dashboards",
-      desc: "Plataformas SaaS, painéis de dados e sistemas internos com autenticação robusta e escalabilidade.",
-      tags: ["React", "Supabase", "Auth", "API REST"],
+      desc: "Plataformas SaaS, painéis de dados e sistemas internos com autenticação e escalabilidade.",
+      tags: ["React", "Supabase", "Auth"],
     },
     {
       icon: Settings,
       title: "Sistemas & Automações",
       desc: "Integrações, automações e sistemas sob medida para o que seu negócio precisa rodar.",
-      tags: ["Webhooks", "n8n", "APIs", "Automação"],
+      tags: ["Webhooks", "n8n", "APIs"],
     },
   ];
 
@@ -439,19 +296,15 @@ function ServicesSection() {
           className="font-sora font-bold text-section text-text-primary mb-12"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, i) => (
-            <ScrollReveal key={service.title} delay={i * 0.15}>
-              <GlowCard className="group h-full">
-                <service.icon
-                  size={32}
-                  className="text-accent mb-6"
-                  strokeWidth={1.5}
-                />
+            <ScrollReveal key={service.title} delay={i * 0.1}>
+              <GlowCard className="group h-full flex flex-col">
+                <service.icon size={32} className="text-accent mb-6" strokeWidth={1.5} />
                 <h3 className="font-sora font-bold text-card-title text-text-primary mb-3">
                   {service.title}
                 </h3>
-                <p className="font-inter font-light text-sm text-text-secondary mb-6 leading-relaxed">
+                <p className="font-inter font-light text-sm text-text-secondary mb-8 leading-relaxed flex-grow">
                   {service.desc}
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -474,14 +327,13 @@ function ServicesSection() {
   );
 }
 
-/* ──────────────── PROCESSO — SCROLL-DRIVEN TIMELINE ──────────────── */
+/* ──────────────── PROCESSO — RESPONSIVE TIMELINE ──────────────── */
 interface ProcessSectionProps {
   scrollProgress: MotionValue<number>;
 }
 
 function ProcessSection({ scrollProgress }: ProcessSectionProps) {
   const [activeStep, setActiveStep] = useState(0);
-
   const lineScaleX = useTransform(scrollProgress, [0, 1], [0, 1]);
 
   useMotionValueEvent(scrollProgress, "change", (v) => {
@@ -501,140 +353,51 @@ function ProcessSection({ scrollProgress }: ProcessSectionProps) {
   ];
 
   return (
-    <div className="w-full max-w-7xl mx-auto section-padding overflow-visible">
+    <div className="w-full max-w-7xl mx-auto section-padding overflow-visible py-12 md:py-0">
       <div className="mb-12 md:mb-20">
         <SectionLabel text="PROCESSO" />
-        <h2
-          className="font-sora font-bold text-text-primary"
-          style={{
-            fontSize: "clamp(32px, 5vw, 52px)",
-            lineHeight: 1.1,
-            letterSpacing: "-0.02em",
-          }}
-        >
+        <h2 className="font-sora font-bold text-section text-text-primary">
           Do briefing ao resultado.
         </h2>
       </div>
 
-      {/* Timeline */}
       <div className="relative w-full max-w-6xl mx-auto">
-        {/* Track base */}
-        <div
-          className="absolute hidden md:block"
-          style={{
-            top: "8px",
-            left: "0",
-            right: "0",
-            height: "1px",
-            background: "rgba(255,255,255,0.06)",
-          }}
-        />
-
-        {/* Animated progress line */}
+        {/* Track base desktop */}
+        <div className="absolute hidden md:block top-2 left-0 right-0 h-[1px] bg-white/[0.06]" />
+        {/* Animated line desktop */}
         <motion.div
-          className="absolute hidden md:block"
-          style={{
-            top: "8px",
-            left: "0",
-            right: "0",
-            height: "1px",
-            background: "linear-gradient(90deg, #FF5A1A, rgba(255,90,26,0.6))",
-            scaleX: lineScaleX,
-            transformOrigin: "left center",
-            boxShadow: "0 0 8px rgba(255,90,26,0.5)",
-          }}
+          className="absolute hidden md:block top-2 left-0 right-0 h-[1px] bg-accent origin-left"
+          style={{ scaleX: lineScaleX, boxShadow: "0 0 10px var(--accent)" }}
         />
 
-        {/* Steps Grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
-            gap: "8px",
-            width: "100%",
-            maxWidth: "100%",
-          }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-4">
           {steps.map((step, i) => (
             <motion.div
               key={step.num}
               animate={{ opacity: i <= activeStep ? 1 : 0.25 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                textAlign: "center",
-                padding: "0 4px",
-                minWidth: 0,
-              }}
+              className="flex flex-row md:flex-col items-start md:items-center text-left md:text-center gap-6 md:gap-0"
             >
-              {/* Ponto */}
-              <motion.div
-                animate={{
-                  background: i <= activeStep ? "#FF5A1A" : "rgba(255,255,255,0.15)",
-                  boxShadow:
-                    i <= activeStep
-                      ? "0 0 0 4px rgba(255,90,26,0.15), 0 0 12px rgba(255,90,26,0.4)"
-                      : "none",
-                  scale: i <= activeStep ? 1.2 : 1,
-                }}
-                transition={{ duration: 0.3 }}
-                style={{
-                  width: "16px",
-                  height: "16px",
-                  borderRadius: "50%",
-                  marginBottom: "12px",
-                  flexShrink: 0,
-                }}
-              />
+              {/* Ponto / Indicador */}
+              <div className="flex flex-col items-center md:mb-4">
+                <motion.div
+                  animate={{
+                    background: i <= activeStep ? "#FF5A1A" : "rgba(255,255,255,0.15)",
+                    scale: i <= activeStep ? 1.2 : 1,
+                  }}
+                  className="w-4 h-4 rounded-full"
+                />
+                <div className="w-[1px] h-full md:hidden bg-white/10 mt-2 min-h-[40px]" />
+              </div>
 
-              {/* Número */}
-              <span
-                style={{
-                  fontFamily: "JetBrains Mono, monospace",
-                  fontSize: "10px",
-                  letterSpacing: "0.10em",
-                  color: i <= activeStep ? "#FF5A1A" : "rgba(245,241,236,0.25)",
-                  marginBottom: "6px",
-                  transition: "color 0.3s",
-                }}
-              >
-                {step.num}
-              </span>
-
-              {/* Título */}
-              <span
-                style={{
-                  fontFamily: "Sora, sans-serif",
-                  fontSize: "clamp(12px, 1.5vw, 16px)",
-                  fontWeight: 600,
-                  color: i <= activeStep ? "#F5F1EC" : "rgba(245,241,236,0.25)",
-                  marginBottom: "4px",
-                  transition: "color 0.3s",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {step.title}
-              </span>
-
-              {/* Descrição */}
-              <span
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 300,
-                  fontSize: "clamp(10px, 1vw, 13px)",
-                  color: i <= activeStep
-                    ? "rgba(245,241,236,0.55)"
-                    : "rgba(245,241,236,0.15)",
-                  lineHeight: 1.5,
-                  transition: "color 0.3s",
-                  wordBreak: "break-word",
-                  minWidth: 0,
-                }}
-              >
-                {step.desc}
-              </span>
+              <div className="flex flex-col md:items-center">
+                <span className="font-mono text-[10px] text-accent mb-2">{step.num}</span>
+                <h4 className="font-sora font-bold text-text-primary text-lg mb-1 whitespace-nowrap">
+                  {step.title}
+                </h4>
+                <p className="font-inter text-xs text-text-secondary leading-relaxed max-w-[140px]">
+                  {step.desc}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -646,18 +409,8 @@ function ProcessSection({ scrollProgress }: ProcessSectionProps) {
 /* ──────────────── CASES PREVIEW ──────────────── */
 function CasesSection() {
   const cases = [
-    {
-      title: "Vies Experience",
-      category: "Plataforma EAD",
-      type: "App",
-      year: "2024",
-    },
-    {
-      title: "TSB Parts",
-      category: "E-commerce de autopeças",
-      type: "Site",
-      year: "2024",
-    },
+    { title: "Vies Experience", category: "Plataforma EAD", type: "App" },
+    { title: "TSB Parts", category: "E-commerce Peças", type: "Site" },
   ];
 
   return (
@@ -669,38 +422,16 @@ function CasesSection() {
           tag="h2"
           className="font-sora font-bold text-section text-text-primary mb-12"
         />
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {cases.map((caseItem, i) => (
-            <ScrollReveal key={caseItem.title} delay={i * 0.15}>
-              <Link
-                href={`/cases/${caseItem.title.toLowerCase().replace(/\s+/g, "-")}`}
-              >
-                <div className="group relative overflow-hidden tech-card bg-bg-card aspect-[16/10]">
-                  {/* Placeholder background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-bg-secondary to-bg-card">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,90,26,0.08),transparent_60%)]" />
-                  </div>
-
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-bg-primary/60 group-hover:bg-bg-primary/30 transition-all duration-500" />
-
-                  {/* Info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="font-mono text-label uppercase text-accent tracking-[0.12em]">
-                        {caseItem.type}
-                      </span>
-                      <span className="font-mono text-label uppercase text-text-tertiary tracking-[0.12em]">
-                        {caseItem.year}
-                      </span>
-                    </div>
-                    <h3 className="font-sora font-bold text-2xl text-text-primary">
-                      {caseItem.title}
-                    </h3>
-                    <p className="font-inter text-sm text-text-secondary mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      {caseItem.category}
-                    </p>
+            <ScrollReveal key={caseItem.title} delay={i * 0.1}>
+              <Link href={`/cases/${caseItem.title.toLowerCase().replace(/\s+/g, "-")}`}>
+                <div className="group relative overflow-hidden tech-card aspect-[16/10]">
+                  <div className="absolute inset-0 bg-bg-secondary group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-bg-primary/60" />
+                  <div className="absolute bottom-0 p-8 w-full">
+                    <span className="font-mono text-xs text-accent uppercase mb-2 block">{caseItem.type}</span>
+                    <h3 className="font-sora font-bold text-2xl text-text-primary">{caseItem.title}</h3>
                   </div>
                 </div>
               </Link>
@@ -715,37 +446,21 @@ function CasesSection() {
 /* ──────────────── CTA FINAL ──────────────── */
 function CTASection() {
   return (
-    <section className="section-gap relative z-10 overflow-hidden section-divider">
-      {/* Glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 600px 400px at 50% 50%, rgba(255,90,26,0.12) 0%, transparent 70%)",
-        }}
-      />
-
-      <div className="max-w-3xl mx-auto section-padding text-center relative z-10">
+    <section className="section-gap relative z-10 section-divider overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,90,26,0.1),transparent_70%)]" />
+      <div className="max-w-3xl mx-auto section-padding text-center relative">
         <AnimatedText
           text="Pronto para criar algo que realmente funciona?"
           tag="h2"
-          className="font-sora font-bold text-[32px] md:text-section text-text-primary mb-6"
+          className="font-sora font-bold text-section text-text-primary mb-8"
         />
         <ScrollReveal>
-          <p className="font-inter font-light text-body text-text-secondary mb-10">
-            Briefing gratuito. Sem compromisso. Só resultados.
-          </p>
-        </ScrollReveal>
-        <ScrollReveal delay={0.2}>
           <Link
             href="/contato"
-            className="btn-primary inline-flex items-center gap-2 px-8 py-4 text-bg-primary font-inter font-medium text-cta group"
+            className="btn-primary inline-flex items-center gap-2 px-10 py-5 text-bg-primary font-inter font-medium text-cta group"
           >
-            Agendar conversa
-            <ArrowRight
-              size={16}
-              className="transition-transform group-hover:translate-x-1"
-            />
+            Agendar conversa gratuito
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
           </Link>
         </ScrollReveal>
       </div>
@@ -753,7 +468,6 @@ function CTASection() {
   );
 }
 
-/* ──────────────── HOME PAGE ──────────────── */
 export default function HomePage() {
   const processRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: processProgress } = useScroll({
@@ -767,24 +481,11 @@ export default function HomePage() {
       <MarqueeTicker />
       <ProblemSection />
       <ServicesSection />
-
-      {/* Wrapper sticky — altura define quanto tempo a tela fica "presa" */}
       <div ref={processRef} style={{ height: "350vh", position: "relative" }}>
-        <div
-          style={{
-            position: "sticky",
-            top: "0",
-            height: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            overflow: "hidden",
-          }}
-        >
+        <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
           <ProcessSection scrollProgress={processProgress} />
         </div>
       </div>
-
       <CasesSection />
       <CTASection />
     </>

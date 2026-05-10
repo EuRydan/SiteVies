@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Check, ArrowRight, Shield, Search, Zap, Code } from "lucide-react";
+import { Check, ArrowRight, Search, Shield, Zap, Code } from "lucide-react";
 import Link from "next/link";
 import SectionLabel from "@/components/SectionLabel";
 import AnimatedText from "@/components/AnimatedText";
@@ -123,34 +123,34 @@ function ServiceCard({ service, index }: ServiceCardProps) {
     offset: ["start end", "start start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [0.95, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1]);
+  const scale = useTransform(scrollYProgress, [0, 1], [0.96, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15, 1], [0, 1, 1]);
 
   return (
     <div
       ref={cardRef}
       className="sticky w-full"
       style={{ 
-        top: `${100 + index * 40}px`,
+        top: `calc(clamp(80px, 12vh, 120px) + ${index * 24}px)`,
         zIndex: index + 10,
-        paddingBottom: "80px"
+        paddingBottom: "clamp(40px, 8vh, 80px)"
       }}
     >
       <motion.div style={{ scale, opacity }} className="overflow-visible">
-        <GlowCard className="!p-8 md:!p-12 transition-all duration-500 hover:border-accent/40 bg-bg-primary" tilt={false}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
-              <h3 className="font-sora font-bold text-[32px] md:text-[40px] text-text-primary mb-6 leading-tight">
+        <GlowCard className="!p-6 md:!p-10 lg:!p-14 bg-bg-primary transition-all duration-500 hover:border-accent/40" tilt={false}>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+            <div className="lg:col-span-7">
+              <h3 className="font-sora font-bold text-3xl md:text-4xl lg:text-5xl text-text-primary mb-6 leading-tight">
                 {service.title}
               </h3>
-              <p className="font-inter font-light text-body text-text-secondary mb-10 max-w-lg leading-relaxed">
+              <p className="font-inter font-light text-body text-text-secondary mb-10 max-w-lg">
                 {service.desc}
               </p>
               <div className="flex flex-wrap gap-2 mb-10">
                 {service.stack.map((tech) => (
                   <span
                     key={tech}
-                    className="px-4 py-1.5 bg-accent-muted text-accent font-mono text-[11px] font-bold uppercase tracking-widest border border-accent/10"
+                    className="px-3 py-1 bg-accent-muted text-accent font-mono text-[10px] md:text-[11px] font-bold uppercase tracking-widest border border-accent/10"
                     style={{ borderRadius: "2px" }}
                   >
                     {tech}
@@ -162,26 +162,19 @@ function ServiceCard({ service, index }: ServiceCardProps) {
                 className="inline-flex items-center gap-2 text-accent font-inter font-medium text-cta group"
               >
                 Solicitar orçamento
-                <ArrowRight
-                  size={16}
-                  className="transition-transform group-hover:translate-x-1"
-                />
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
 
-            <div className="bg-white/[0.02] border border-white/[0.05] p-8 md:p-10 rounded-[2px]">
-              <h4 className="font-mono text-label uppercase text-text-tertiary tracking-[0.15em] mb-8">
+            <div className="lg:col-span-5 bg-white/[0.02] border border-white/[0.05] p-6 md:p-8 lg:p-10 rounded-[2px] flex flex-col justify-center">
+              <h4 className="font-mono text-[10px] uppercase text-text-tertiary tracking-[0.2em] mb-6">
                 ENTREGÁVEIS
               </h4>
               <ul className="space-y-4">
                 {service.deliverables.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <Check
-                      size={16}
-                      className="text-accent mt-1 flex-shrink-0"
-                      strokeWidth={3}
-                    />
-                    <span className="font-inter font-light text-[15px] text-text-secondary">
+                    <Check size={14} className="text-accent mt-1 flex-shrink-0" strokeWidth={3} />
+                    <span className="font-inter font-light text-sm md:text-[15px] text-text-secondary">
                       {item}
                     </span>
                   </li>
@@ -199,15 +192,15 @@ export default function ServicosPage() {
   return (
     <div className="pt-32 pb-20">
       {/* Hero */}
-      <section className="max-w-7xl mx-auto section-padding mb-24">
+      <section className="max-w-7xl mx-auto section-padding mb-24 lg:mb-32">
         <SectionLabel text="NOSSOS SERVIÇOS" />
         <AnimatedText
           text="Tudo que seu negócio precisa no digital."
           tag="h1"
-          className="font-sora font-extrabold text-[40px] md:text-[56px] lg:text-hero leading-[1.0] tracking-[-0.03em] text-text-primary mb-6"
+          className="font-sora font-extrabold text-hero text-text-primary mb-8"
         />
         <ScrollReveal>
-          <p className="font-inter font-light text-body text-text-secondary max-w-2xl">
+          <p className="font-inter font-light text-body text-text-secondary max-w-2xl leading-relaxed">
             De landing pages de alta conversão a sistemas complexos — cada projeto é
             construído com obsessão por qualidade, performance e resultado mensurável.
           </p>
@@ -215,8 +208,8 @@ export default function ServicosPage() {
       </section>
 
       {/* Expanded Service Cards — STACKED EFFECT */}
-      <section className="max-w-7xl mx-auto section-padding mb-40 overflow-visible">
-        <div className="relative space-y-[15vh] pb-[20vh]">
+      <section className="max-w-7xl mx-auto section-padding mb-32 lg:mb-48 overflow-visible">
+        <div className="relative space-y-[10vh] lg:space-y-[15vh] pb-[10vh] lg:pb-[20vh]">
           {services.map((service, i) => (
             <ServiceCard key={service.title} service={service} index={i} />
           ))}
@@ -224,27 +217,23 @@ export default function ServicosPage() {
       </section>
 
       {/* Differentials */}
-      <section className="max-w-7xl mx-auto section-padding mb-32">
+      <section className="max-w-7xl mx-auto section-padding mb-32 lg:mb-48">
         <SectionLabel text="DIFERENCIAIS TÉCNICOS" />
         <AnimatedText
           text="Por que somos diferentes."
           tag="h2"
-          className="font-sora font-bold text-section text-text-primary mb-12"
+          className="font-sora font-bold text-section text-text-primary mb-12 lg:mb-16"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {differentials.map((diff, i) => (
             <ScrollReveal key={diff.title} delay={i * 0.1}>
-              <GlowCard className="h-full">
-                <diff.icon
-                  size={28}
-                  className="text-accent mb-4"
-                  strokeWidth={1.5}
-                />
-                <h3 className="font-sora font-bold text-card-title text-text-primary mb-3">
+              <GlowCard className="h-full !p-8">
+                <diff.icon size={28} className="text-accent mb-6" strokeWidth={1.5} />
+                <h3 className="font-sora font-bold text-card-title text-text-primary mb-4">
                   {diff.title}
                 </h3>
-                <p className="font-inter font-light text-sm text-text-secondary leading-relaxed">
+                <p className="font-inter font-light text-body text-text-secondary leading-relaxed">
                   {diff.desc}
                 </p>
               </GlowCard>
@@ -254,42 +243,40 @@ export default function ServicosPage() {
       </section>
 
       {/* Pricing Tiers */}
-      <section className="max-w-7xl mx-auto section-padding">
+      <section className="max-w-7xl mx-auto section-padding mb-20 lg:mb-32">
         <SectionLabel text="PLANOS" />
         <AnimatedText
           text="Encontre o plano ideal."
           tag="h2"
-          className="font-sora font-bold text-section text-text-primary mb-12"
+          className="font-sora font-bold text-section text-text-primary mb-12 lg:mb-16"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {tiers.map((tier, i) => (
             <ScrollReveal key={tier.name} delay={i * 0.15}>
               <div
-                className={`tech-card p-8 relative ${
-                  tier.featured
-                    ? "corner-decoration"
-                    : ""
+                className={`tech-card p-8 lg:p-10 relative flex flex-col h-full ${
+                  tier.featured ? "corner-decoration border-accent/30" : ""
                 }`}
                 style={tier.featured ? {
-                  borderColor: "rgba(255,90,26,0.4)",
-                  borderTopColor: "rgba(255,90,26,0.6)",
-                  boxShadow: "0 0 0 1px rgba(255,90,26,0.15) inset, 0 8px 32px rgba(255,90,26,0.08)",
+                  boxShadow: "0 0 0 1px rgba(255,90,26,0.15) inset, 0 12px 40px rgba(255,90,26,0.12)",
                 } : {}}
               >
                 {tier.featured && (
-                  <span className="absolute -top-3 left-6 px-3 py-1 bg-accent text-bg-primary font-mono text-[10px] uppercase tracking-wider" style={{ borderRadius: "2px" }}>
+                  <span className="absolute -top-3 left-8 px-3 py-1 bg-accent text-bg-primary font-mono text-[10px] uppercase tracking-wider" style={{ borderRadius: "2px" }}>
                     Mais escolhido
                   </span>
                 )}
-                <h3 className="font-sora font-bold text-2xl text-text-primary mb-1">
-                  {tier.name}
-                </h3>
-                <p className="font-inter text-sm text-text-secondary mb-6">
-                  {tier.type}
-                </p>
+                <div className="mb-8">
+                  <h3 className="font-sora font-bold text-2xl lg:text-3xl text-text-primary mb-2">
+                    {tier.name}
+                  </h3>
+                  <p className="font-inter text-sm text-text-secondary">
+                    {tier.type}
+                  </p>
+                </div>
 
-                <div className="space-y-4 mb-8">
+                <div className="space-y-5 mb-12 flex-grow">
                   {[
                     { label: "CMS", value: tier.cms },
                     { label: "SEO", value: tier.seo },
@@ -299,12 +286,12 @@ export default function ServicosPage() {
                   ].map((row) => (
                     <div
                       key={row.label}
-                      className="flex justify-between items-center border-b border-border-subtle pb-3"
+                      className="flex justify-between items-center border-b border-white/[0.05] pb-3"
                     >
-                      <span className="font-mono text-[11px] text-text-tertiary uppercase tracking-wider">
+                      <span className="font-mono text-[10px] text-text-tertiary uppercase tracking-[0.15em]">
                         {row.label}
                       </span>
-                      <span className="font-inter text-sm text-text-primary">
+                      <span className="font-inter text-sm font-medium text-text-primary">
                         {row.value}
                       </span>
                     </div>
@@ -313,10 +300,8 @@ export default function ServicosPage() {
 
                 <Link
                   href="/contato"
-                  className={`w-full inline-flex items-center justify-center gap-2 px-6 py-3 font-inter font-medium text-cta transition-all duration-300 ${
-                    tier.featured
-                      ? "btn-primary text-bg-primary"
-                      : "btn-ghost"
+                  className={`w-full inline-flex items-center justify-center gap-2 px-8 py-4 font-inter font-medium text-cta transition-all duration-300 ${
+                    tier.featured ? "btn-primary text-bg-primary" : "btn-ghost"
                   }`}
                 >
                   {tier.cta}
