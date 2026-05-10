@@ -11,22 +11,23 @@ import {
   MotionValue,
 } from "framer-motion";
 import Link from "next/link";
-import { Layout, Monitor, Settings, ArrowRight } from "lucide-react";
+import { Layout, Monitor, Settings, ArrowRight, Zap, ShieldCheck, Gauge } from "lucide-react";
 import SectionLabel from "@/components/SectionLabel";
 import GlowCard from "@/components/GlowCard";
 import AnimatedText from "@/components/AnimatedText";
 import ScrollReveal from "@/components/ScrollReveal";
 import MarqueeTicker from "@/components/MarqueeTicker";
 
-/* ──────────────── METRIC CARD — 3D TILT ──────────────── */
+/* ──────────────── METRIC CARD — ENHANCED PREMIUM VERSION ──────────────── */
 interface MetricCardProps {
   label: string;
   value: string;
   sub: string;
   delay: number;
+  icon: any;
 }
 
-function MetricCard({ label, value, sub, delay }: MetricCardProps) {
+function MetricCard({ label, value, sub, delay, icon: Icon }: MetricCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const rawX = useMotionValue(0);
@@ -35,8 +36,8 @@ function MetricCard({ label, value, sub, delay }: MetricCardProps) {
   const x = useSpring(rawX, { stiffness: 300, damping: 25, mass: 0.5 });
   const y = useSpring(rawY, { stiffness: 300, damping: 25, mass: 0.5 });
 
-  const rotateX = useTransform(y, [-0.5, 0.5], [10, -10]);
-  const rotateY = useTransform(x, [-0.5, 0.5], [-10, 10]);
+  const rotateX = useTransform(y, [-0.5, 0.5], [12, -12]);
+  const rotateY = useTransform(x, [-0.5, 0.5], [-12, 12]);
   const glowX = useTransform(x, [-0.5, 0.5], [0, 100]);
   const glowY = useTransform(y, [-0.5, 0.5], [0, 100]);
 
@@ -57,44 +58,62 @@ function MetricCard({ label, value, sub, delay }: MetricCardProps) {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay, duration: 0.4 }}
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay, duration: 0.5 }}
       style={{
         rotateX,
         rotateY,
         transformStyle: "preserve-3d",
-        perspective: "800px",
+        perspective: "1000px",
         position: "relative",
-        background: "#0D0D0D",
-        border: "1px solid rgba(255,255,255,0.04)",
-        borderRadius: "1px",
-        padding: "clamp(12px, 3vw, 20px)",
+        background: "rgba(13, 13, 13, 0.7)",
+        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255, 90, 26, 0.15)",
+        borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+        borderRadius: "2px",
+        padding: "clamp(16px, 3vw, 24px)",
         width: "100%",
         cursor: "default",
+        boxShadow: "0 10px 30px -10px rgba(0,0,0,0.5)",
       }}
       className="group"
     >
+      {/* Corner Accent */}
+      <div className="absolute top-0 right-0 w-8 h-8 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-0 w-[1px] h-full bg-accent/30" />
+        <div className="absolute top-0 right-0 h-[1px] w-full bg-accent/30" />
+      </div>
+
+      {/* Dynamic Glow Overlay */}
       <motion.div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
         style={{
           background: useTransform(
             [glowX, glowY],
-            ([gx, gy]) => `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,90,26,0.06) 0%, transparent 60%)`
+            ([gx, gy]) => `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,90,26,0.12) 0%, transparent 70%)`
           ),
-          pointerEvents: "none",
         }}
       />
-      <div style={{ transform: "translateZ(10px)" }}>
-        <p className="font-mono text-[9px] text-text-tertiary mb-1 uppercase tracking-widest">
-          {label}
-        </p>
-        <p className="font-sora font-bold text-accent text-2xl md:text-3xl leading-none mb-1">
-          {value}
-        </p>
-        <p className="font-inter font-light text-[11px] text-text-secondary">
-          {sub}
-        </p>
+
+      <div style={{ transform: "translateZ(30px)" }} className="relative">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-8 h-8 rounded-[1px] bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
+            <Icon size={16} strokeWidth={2} />
+          </div>
+          <p className="font-mono text-[9px] md:text-[10px] text-text-tertiary uppercase tracking-[0.2em]">
+            {label}
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <p className="font-sora font-extrabold text-accent text-3xl md:text-4xl leading-none tracking-tight drop-shadow-[0_0_15px_rgba(255,90,26,0.2)]">
+            {value}
+          </p>
+          <p className="font-inter font-medium text-[11px] md:text-xs text-text-secondary uppercase tracking-wider opacity-80">
+            {sub}
+          </p>
+        </div>
       </div>
     </motion.div>
   );
@@ -104,13 +123,13 @@ function MetricCard({ label, value, sub, delay }: MetricCardProps) {
 function HeroSection() {
   return (
     <section className="relative min-h-[90vh] lg:min-h-screen flex items-center pt-24 lg:pt-20 section-padding overflow-hidden">
-      {/* Background glow */}
+      {/* Background radial glow */}
       <div
-        className="absolute top-1/4 right-0 w-[500px] h-[500px] opacity-20 blur-[100px] pointer-events-none"
+        className="absolute top-1/4 right-0 w-[600px] h-[600px] opacity-15 blur-[120px] pointer-events-none"
         style={{ background: "radial-gradient(circle, var(--accent), transparent 70%)" }}
       />
 
-      <div className="relative w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <div className="relative w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
         <div className="lg:col-span-7 flex flex-col gap-6 md:gap-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -136,7 +155,7 @@ function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.9, duration: 0.6 }}
-              className="font-inter font-light text-body text-text-secondary max-w-[540px]"
+              className="font-inter font-light text-body text-text-secondary max-w-[560px] leading-relaxed"
             >
               Criamos websites, aplicações e sistemas que combinam design de alto
               impacto, segurança em profundidade e SEO que realmente posiciona.
@@ -165,14 +184,14 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* Metric Cards Grid - Fixed Alignment and Spacing for Mobile */}
-        <div className="lg:col-span-5 flex flex-col gap-4 lg:items-end mb-12 lg:mb-0">
-          <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 w-full lg:max-w-[200px]">
-            <MetricCard label="LIGHTHOUSE" value="90+" sub="Score garantido" delay={1.3} />
-            <MetricCard label="CORE WEB VITALS" value="✓" sub="Aprovado" delay={1.45} />
-          </div>
-          <div className="w-full lg:max-w-[200px]">
-            <MetricCard label="SECURITY GRADE" value="A+" sub="SSL + Headers" delay={1.6} />
+        {/* Enhanced Metric Cards Grid */}
+        <div className="lg:col-span-5 flex flex-col gap-5 lg:items-end mb-16 lg:mb-0 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5 w-full lg:max-w-[240px]">
+            <MetricCard label="LIGHTHOUSE" value="90+" sub="Score garantido" icon={Gauge} delay={1.3} />
+            <MetricCard label="CORE WEB VITALS" value="✓" sub="Aprovado" icon={Zap} delay={1.45} />
+            <div className="sm:col-span-2 lg:col-span-1">
+              <MetricCard label="SECURITY GRADE" value="A+" sub="SSL + Headers" icon={ShieldCheck} delay={1.6} />
+            </div>
           </div>
         </div>
       </div>
