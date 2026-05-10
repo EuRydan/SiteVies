@@ -11,7 +11,7 @@ import {
   MotionValue,
 } from "framer-motion";
 import Link from "next/link";
-import { Layout, Monitor, Settings, ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import SectionLabel from "@/components/SectionLabel";
 import GlowCard from "@/components/GlowCard";
 import AnimatedText from "@/components/AnimatedText";
