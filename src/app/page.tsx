@@ -11,7 +11,7 @@ import {
   MotionValue,
 } from "framer-motion";
 import Link from "next/link";
-import { Layout, Monitor, Settings, ArrowRight, Zap, ShieldCheck, Gauge } from "lucide-react";
+import { Layout, Monitor, Settings, ArrowRight, Zap, ShieldCheck, Gauge, LucideIcon } from "lucide-react";
 import SectionLabel from "@/components/SectionLabel";
 import GlowCard from "@/components/GlowCard";
 import AnimatedText from "@/components/AnimatedText";
@@ -24,7 +24,7 @@ interface MetricCardProps {
   value: string;
   sub: string;
   delay: number;
-  icon: any;
+  icon: LucideIcon;
 }
 
 function MetricCard({ label, value, sub, delay, icon: Icon }: MetricCardProps) {
