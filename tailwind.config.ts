@@ -36,11 +36,11 @@ const config: Config = {
         mono: ["var(--font-jetbrains)", "monospace"],
       },
       fontSize: {
-        "hero": ["clamp(42px, 8vw, 82px)", { lineHeight: "0.95", letterSpacing: "-0.04em" }],
-        "section": ["clamp(32px, 5vw, 56px)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],
-        "card-title": ["clamp(20px, 3vw, 26px)", { lineHeight: "1.2" }],
-        "body": ["clamp(15px, 1.6vw, 18px)", { lineHeight: "1.65" }],
-        "label": ["clamp(10px, 1vw, 12px)", { lineHeight: "1.5", letterSpacing: "0.15em" }],
+        "hero": ["clamp(32px, 9vw, 82px)", { lineHeight: "0.95", letterSpacing: "-0.04em" }],
+        "section": ["clamp(26px, 7vw, 56px)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],
+        "card-title": ["clamp(18px, 4vw, 26px)", { lineHeight: "1.2" }],
+        "body": ["clamp(14px, 2vw, 18px)", { lineHeight: "1.65" }],
+        "label": ["clamp(9px, 1.5vw, 12px)", { lineHeight: "1.5", letterSpacing: "0.15em" }],
         "cta": ["14px", { lineHeight: "1.5", letterSpacing: "0.04em" }],
       },
       animation: {

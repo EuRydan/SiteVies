@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { FileCheck, ThumbsUp, RefreshCw, PackageCheck } from "lucide-react";
+import { FileCheck, ThumbsUp, RefreshCw, PackageCheck, Check } from "lucide-react";
 import SectionLabel from "@/components/SectionLabel";
 import AnimatedText from "@/components/AnimatedText";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -14,19 +14,19 @@ const steps = [
     title: "Briefing & Discovery",
     desc: "Entendemos profundamente o seu negócio, público-alvo, concorrentes e objetivos. Esse é o fundamento de tudo.",
     activities: [
-      "Reunião de alinhamento (60 min)",
+      "Reunião de alinhamento",
       "Análise de concorrentes",
       "Definição de personas",
-      "Benchmark visual e funcional",
+      "Benchmark visual",
       "Documento de escopo",
     ],
   },
   {
     num: "02",
     title: "Proposta & Escopo",
-    desc: "Com base no briefing, definimos escopo fixo, cronograma, entregáveis e investimento. Tudo documentado, sem surpresas.",
+    desc: "Com base no briefing, definimos escopo fixo, cronograma, entregáveis e investimento. Sem surpresas.",
     activities: [
-      "Proposta comercial detalhada",
+      "Proposta detalhada",
       "Cronograma por fases",
       "Lista de entregáveis",
       "Termos e condições",
@@ -36,19 +36,19 @@ const steps = [
   {
     num: "03",
     title: "Design & Prototipação",
-    desc: "Criamos o design completo em alta fidelidade. Você aprova cada tela antes de uma linha de código ser escrita.",
+    desc: "Criamos o design completo em alta fidelidade. Você aprova cada tela antes do desenvolvimento.",
     activities: [
-      "Wireframes de baixa fidelidade",
+      "Wireframes",
       "UI Design em alta fidelidade",
       "Protótipo interativo",
-      "Design system documentado",
+      "Design system",
       "Rodada de revisões",
     ],
   },
   {
     num: "04",
     title: "Desenvolvimento",
-    desc: "Código limpo, performático e seguro. TypeScript strict, testes, CI/CD e deploy automatizado desde o dia um.",
+    desc: "Código limpo, performático e seguro com as melhores tecnologias do mercado.",
     activities: [
       "Setup de projeto e CI/CD",
       "Desenvolvimento frontend",
@@ -60,13 +60,13 @@ const steps = [
   {
     num: "05",
     title: "Launch & Handoff",
-    desc: "Deploy em produção, configuração de analytics, SEO final e handoff completo com documentação e treinamento.",
+    desc: "Deploy em produção, configuração de analytics, SEO final e treinamento.",
     activities: [
       "Deploy em produção",
       "Configuração de analytics",
       "SEO técnico final",
       "Documentação completa",
-      "Treinamento de uso do CMS",
+      "Treinamento de uso",
     ],
   },
 ];
@@ -90,28 +90,26 @@ const guarantees = [
   {
     icon: PackageCheck,
     title: "Full Handoff",
-    desc: "Documentação, credenciais e treinamento inclusos.",
+    desc: "Documentação e treinamento inclusos.",
   },
 ];
 
 export default function ProcessoPage() {
   const timelineRef = useRef(null);
-  const timelineInView = useInView(timelineRef, { once: true, margin: "-100px" });
+  const timelineInView = useInView(timelineRef, { once: true, margin: "-50px" });
 
   return (
-    <div className="pt-32 pb-20 overflow-visible">
+    <div className="pt-24 md:pt-32 pb-20">
       {/* Hero */}
-      <section className="max-w-7xl mx-auto section-padding mb-24 overflow-visible">
+      <section className="max-w-7xl mx-auto section-padding mb-20 lg:mb-32">
         <SectionLabel text="COMO TRABALHAMOS" />
-        <div className="overflow-visible pb-2">
-          <AnimatedText
-            text="Como transformamos um briefing em resultado."
-            tag="h1"
-            className="font-sora font-extrabold text-[40px] md:text-[56px] lg:text-hero leading-[1.0] tracking-[-0.03em] text-text-primary mb-6 overflow-visible"
-          />
-        </div>
+        <AnimatedText
+          text="Como transformamos um briefing em resultado."
+          tag="h1"
+          className="font-sora font-extrabold text-hero text-text-primary mb-6 md:mb-8"
+        />
         <ScrollReveal>
-          <p className="font-inter font-light text-body text-text-secondary max-w-2xl">
+          <p className="font-inter font-light text-body text-text-secondary max-w-2xl leading-relaxed">
             Um processo claro, previsível e transparente. Cada fase tem entregáveis
             definidos e sua aprovação antes de avançar.
           </p>
@@ -120,129 +118,84 @@ export default function ProcessoPage() {
 
       {/* Timeline */}
       <section className="max-w-4xl mx-auto section-padding mb-32 overflow-visible" ref={timelineRef}>
-        <div style={{ position: "relative", paddingLeft: "60px" }} className="overflow-visible">
-          {/* Linha vertical — posicionada no centro do círculo */}
-          <div
-            style={{
-              position: "absolute",
-              left: "28px", /* metade da largura do círculo (56px / 2 = 28px) ajustado ao offset */
-              top: "0",
-              bottom: "0",
-              width: "1px",
-              background: "rgba(255,90,26,0.20)",
-            }}
-          >
+        <div className="relative pl-8 md:pl-16">
+          {/* Main vertical line */}
+          <div className="absolute left-0 md:left-4 top-0 bottom-0 w-[1px] bg-white/[0.05]">
             <motion.div
               className="w-full bg-accent origin-top"
               initial={{ scaleY: 0 }}
               animate={timelineInView ? { scaleY: 1 } : { scaleY: 0 }}
-              transition={{ duration: 2, ease: "easeOut" }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
               style={{ height: "100%" }}
             />
           </div>
 
-          <div className="overflow-visible">
+          <div className="space-y-16 lg:space-y-24">
             {steps.map((step, i) => (
-              <ScrollReveal key={step.num} delay={i * 0.15} direction="left">
-                <div
-                  style={{
-                    position: "relative",
-                    display: "flex",
-                    gap: "32px",
-                    marginBottom: "64px",
-                    alignItems: "flex-start",
-                  }}
-                  className="overflow-visible"
-                >
-                  {/* Número + círculo — container com largura fixa */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      left: "-60px", /* puxa para fora do paddingLeft */
-                      top: "0",
-                      width: "56px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "4px",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {/* Número watermark */}
-                    <span
-                      style={{
-                        fontFamily: "JetBrains Mono, monospace",
-                        fontSize: "11px",
-                        color: "rgba(255,90,26,0.50)",
-                        letterSpacing: "0.08em",
-                      }}
-                    >
-                      {step.num}
-                    </span>
-
-                    {/* Círculo — centralizado no eixo da linha */}
-                    <div
-                      style={{
-                        width: "12px",
-                        height: "12px",
-                        borderRadius: "50%",
-                        background: "#FF5A1A",
-                        boxShadow:
-                          "0 0 0 4px rgba(255,90,26,0.12), 0 0 12px rgba(255,90,26,0.3)",
-                        flexShrink: 0,
-                      }}
-                    />
+              <div key={step.num} className="relative group">
+                {/* Milestone dot */}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                  className="absolute -left-8 md:-left-12 top-2 w-4 h-4 rounded-full bg-bg-primary border-2 border-accent z-10"
+                />
+                
+                <ScrollReveal delay={0.1} direction="left">
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-12">
+                    <div className="flex-shrink-0">
+                      <span className="font-mono text-[10px] md:text-xs text-accent uppercase tracking-widest block mb-1">
+                        PASSO {step.num}
+                      </span>
+                      <h3 className="font-sora font-bold text-2xl md:text-3xl text-text-primary">
+                        {step.title}
+                      </h3>
+                    </div>
+                    
+                    <div className="max-w-xl">
+                      <p className="font-inter font-light text-sm md:text-body text-text-secondary mb-6 leading-relaxed">
+                        {step.desc}
+                      </p>
+                      
+                      <div className="bg-white/[0.02] border border-white/[0.05] p-5 md:p-6 rounded-[1px]">
+                        <h4 className="font-mono text-[9px] text-text-tertiary uppercase tracking-widest mb-4">ENTREGÁVEIS / ATIVIDADES</h4>
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
+                          {step.activities.map((activity) => (
+                            <li key={activity} className="flex items-center gap-2 text-xs md:text-sm text-text-secondary">
+                              <Check size={12} className="text-accent flex-shrink-0" />
+                              <span className="font-inter">{activity}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-
-                  {/* Conteúdo do step */}
-                  <div>
-                    <h3 className="font-sora font-bold text-[24px] text-text-primary mb-3">
-                      {step.title}
-                    </h3>
-                    <p className="font-inter font-light text-body text-text-secondary mb-4">
-                      {step.desc}
-                    </p>
-                    <ul className="space-y-2">
-                      {step.activities.map((activity) => (
-                        <li
-                          key={activity}
-                          className="flex items-center gap-2 text-sm text-text-secondary"
-                        >
-                          <div className="w-1 h-1 rounded-full bg-accent flex-shrink-0" />
-                          <span className="font-inter">{activity}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </ScrollReveal>
+                </ScrollReveal>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Guarantees */}
-      <section className="max-w-7xl mx-auto section-padding">
+      <section className="max-w-7xl mx-auto section-padding mb-16 lg:mb-32">
         <SectionLabel text="SEM SURPRESAS" />
         <AnimatedText
           text="Garantias do nosso processo."
           tag="h2"
-          className="font-sora font-bold text-section text-text-primary mb-12"
+          className="font-sora font-bold text-section text-text-primary mb-10 lg:mb-16"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
           {guarantees.map((item, i) => (
             <ScrollReveal key={item.title} delay={i * 0.1}>
-              <GlowCard className="h-full">
-                <item.icon
-                  size={28}
-                  className="text-accent mb-4"
-                  strokeWidth={1.5}
-                />
-                <h3 className="font-sora font-bold text-card-title text-text-primary mb-2">
+              <GlowCard className="h-full !p-6 md:!p-8">
+                <item.icon size={24} className="text-accent mb-4 md:mb-5" strokeWidth={1.5} />
+                <h3 className="font-sora font-bold text-lg md:text-card-title text-text-primary mb-2 md:mb-3">
                   {item.title}
                 </h3>
-                <p className="font-inter font-light text-sm text-text-secondary">
+                <p className="font-inter font-light text-sm text-text-secondary leading-relaxed">
                   {item.desc}
                 </p>
               </GlowCard>

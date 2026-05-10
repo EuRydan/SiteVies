@@ -36,20 +36,21 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px),
-    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-  background-size:
-    80px 80px,
-    80px 80px,
-    20px 20px,
-    20px 20px;
-  background-position:
-    -1px -1px,
-    -1px -1px,
-    -1px -1px,
-    -1px -1px;
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.008) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.008) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 20px 20px, 20px 20px;
+  background-position: -1px -1px;
+}
+
+@media (max-width: 768px) {
+  body::before {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px;
+  }
 }
 
 /* Camada 2: Noise texture orgânica via SVG filter */
@@ -237,13 +238,13 @@ main, header, footer, nav {
    ============================================= */
 
 .section-padding {
-  padding-left: clamp(1.25rem, 5vw, 6rem);
-  padding-right: clamp(1.25rem, 5vw, 6rem);
+  padding-left: clamp(1rem, 6vw, 6rem);
+  padding-right: clamp(1rem, 6vw, 6rem);
 }
 
 .section-gap {
-  padding-top: clamp(5rem, 10vw, 10rem);
-  padding-bottom: clamp(5rem, 10vw, 10rem);
+  padding-top: clamp(4rem, 15vw, 10rem);
+  padding-bottom: clamp(4rem, 15vw, 10rem);
 }
 
 .container-max {

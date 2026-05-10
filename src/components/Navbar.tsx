@@ -52,10 +52,10 @@ export default function Navbar() {
           borderTop: "2px solid rgba(255,90,26,0.60)",
         }}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between h-16 md:h-20">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between h-14 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="font-sora font-bold text-xl md:text-2xl text-text-primary">
+            <span className="font-sora font-bold text-lg md:text-2xl text-text-primary">
               Viés<span className="text-accent">.</span>
             </span>
           </Link>
@@ -138,7 +138,7 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 bg-bg-primary pt-20 px-6 md:hidden"
           >
-            <div className="flex flex-col gap-6 mt-8">
+            <div className="flex flex-col gap-5 mt-8">
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.href}
@@ -149,7 +149,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="font-sora text-3xl font-bold text-text-primary hover:text-accent transition-colors"
+                    className="font-sora text-2xl font-bold text-text-primary hover:text-accent transition-colors"
                   >
                     {link.label}
                   </Link>
