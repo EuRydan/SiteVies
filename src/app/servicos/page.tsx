@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Check, ArrowRight, Shield, Search, Zap, Code } from "lucide-react";
 import Link from "next/link";
 import SectionLabel from "@/components/SectionLabel";
@@ -28,7 +30,7 @@ const services = [
       "Autenticação segura (OAuth, JWT, MFA)",
       "Dashboard com visualização de dados",
       "API REST documentada",
-      "Banco de dados escalável",
+      "Banco de dados escalável (PostgreSQL)",
       "Deploy com CI/CD automatizado",
       "Testes automatizados",
     ],
@@ -108,6 +110,91 @@ const tiers = [
   },
 ];
 
+/* ──────────────── SERVICE CARD — STACKABLE ──────────────── */
+interface ServiceCardProps {
+  service: typeof services[0];
+  index: number;
+}
+
+function ServiceCard({ service, index }: ServiceCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "start start"],
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 1], [0.95, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
+
+  return (
+    <div
+      ref={cardRef}
+      className="sticky w-full"
+      style={{ 
+        top: `${100 + index * 40}px`,
+        zIndex: index + 10,
+        paddingBottom: "80px"
+      }}
+    >
+      <motion.div style={{ scale, opacity }} className="overflow-visible">
+        <GlowCard className="!p-8 md:!p-12 transition-all duration-500 hover:border-accent/40" tilt={false}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div>
+              <h3 className="font-sora font-bold text-[32px] md:text-[40px] text-text-primary mb-6 leading-tight">
+                {service.title}
+              </h3>
+              <p className="font-inter font-light text-body text-text-secondary mb-10 max-w-lg leading-relaxed">
+                {service.desc}
+              </p>
+              <div className="flex flex-wrap gap-2 mb-10">
+                {service.stack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-4 py-1.5 bg-accent-muted text-accent font-mono text-[11px] font-bold uppercase tracking-widest border border-accent/10"
+                    style={{ borderRadius: "2px" }}
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              <Link
+                href="/contato"
+                className="inline-flex items-center gap-2 text-accent font-inter font-medium text-cta group"
+              >
+                Solicitar orçamento
+                <ArrowRight
+                  size={16}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </Link>
+            </div>
+
+            <div className="bg-white/[0.02] border border-white/[0.05] p-8 md:p-10 rounded-[2px]">
+              <h4 className="font-mono text-label uppercase text-text-tertiary tracking-[0.15em] mb-8">
+                ENTREGÁVEIS
+              </h4>
+              <ul className="space-y-4">
+                {service.deliverables.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <Check
+                      size={16}
+                      className="text-accent mt-1 flex-shrink-0"
+                      strokeWidth={3}
+                    />
+                    <span className="font-inter font-light text-[15px] text-text-secondary">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </GlowCard>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function ServicosPage() {
   return (
     <div className="pt-32 pb-20">
@@ -127,63 +214,11 @@ export default function ServicosPage() {
         </ScrollReveal>
       </section>
 
-      {/* Expanded Service Cards */}
-      <section className="max-w-7xl mx-auto section-padding mb-32">
-        <div className="space-y-12">
+      {/* Expanded Service Cards — STACKED EFFECT */}
+      <section className="max-w-7xl mx-auto section-padding mb-40 overflow-visible">
+        <div className="relative space-y-[15vh] pb-[20vh]">
           {services.map((service, i) => (
-            <ScrollReveal key={service.title} delay={i * 0.1}>
-              <GlowCard className="!p-8 md:!p-12" tilt={false}>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div>
-                    <h3 className="font-sora font-bold text-[28px] text-text-primary mb-4">
-                      {service.title}
-                    </h3>
-                    <p className="font-inter font-light text-body text-text-secondary mb-6">
-                      {service.desc}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {service.stack.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-3 py-1 bg-accent-muted text-accent font-mono text-[10px] uppercase tracking-wider"
-                          style={{ borderRadius: "2px" }}
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <Link
-                      href="/contato"
-                      className="inline-flex items-center gap-2 text-accent font-inter font-medium text-cta hover:text-accent-hover transition-colors group"
-                    >
-                      Solicitar orçamento
-                      <ArrowRight
-                        size={14}
-                        className="transition-transform group-hover:translate-x-1"
-                      />
-                    </Link>
-                  </div>
-                  <div>
-                    <h4 className="font-mono text-label uppercase text-text-tertiary tracking-[0.12em] mb-4">
-                      ENTREGÁVEIS
-                    </h4>
-                    <ul className="space-y-3">
-                      {service.deliverables.map((item) => (
-                        <li key={item} className="flex items-start gap-3">
-                          <Check
-                            size={16}
-                            className="text-accent mt-0.5 flex-shrink-0"
-                          />
-                          <span className="font-inter text-sm text-text-secondary">
-                            {item}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </GlowCard>
-            </ScrollReveal>
+            <ServiceCard key={service.title} service={service} index={i} />
           ))}
         </div>
       </section>
