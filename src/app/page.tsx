@@ -71,7 +71,6 @@ function MetricCard({ label, value, sub, delay }: MetricCardProps) {
         borderRadius: "1px",
         padding: "clamp(12px, 3vw, 20px)",
         width: "100%",
-        maxWidth: "200px",
         cursor: "default",
       }}
       className="group"
@@ -144,21 +143,21 @@ function HeroSection() {
             </motion.p>
 
             <motion.div
-              className="flex items-center gap-4 flex-wrap"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.1 }}
             >
               <Link
                 href="/contato"
-                className="btn-primary inline-flex items-center gap-2 px-7 py-4 text-bg-primary font-inter font-medium text-cta group"
+                className="btn-primary w-full inline-flex items-center justify-center gap-2 px-7 py-4 text-bg-primary font-inter font-medium text-cta group"
               >
                 Iniciar projeto
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 href="/cases"
-                className="btn-ghost inline-flex items-center gap-2 px-7 py-4 font-inter font-medium text-cta"
+                className="btn-ghost w-full inline-flex items-center justify-center gap-2 px-7 py-4 font-inter font-medium text-cta"
               >
                 Ver cases
               </Link>
@@ -166,13 +165,13 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* Metric Cards Grid - Fixed for mobile */}
-        <div className="lg:col-span-5 grid grid-cols-2 lg:grid-cols-1 gap-3 md:gap-4 lg:justify-items-end">
-          <div className="lg:contents">
+        {/* Metric Cards Grid - Fixed Alignment and Spacing for Mobile */}
+        <div className="lg:col-span-5 flex flex-col gap-4 lg:items-end mb-12 lg:mb-0">
+          <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 w-full lg:max-w-[200px]">
             <MetricCard label="LIGHTHOUSE" value="90+" sub="Score garantido" delay={1.3} />
             <MetricCard label="CORE WEB VITALS" value="✓" sub="Aprovado" delay={1.45} />
           </div>
-          <div className="col-span-2 lg:col-span-1 lg:w-full lg:flex lg:justify-end">
+          <div className="w-full lg:max-w-[200px]">
             <MetricCard label="SECURITY GRADE" value="A+" sub="SSL + Headers" delay={1.6} />
           </div>
         </div>
