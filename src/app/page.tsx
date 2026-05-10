@@ -17,37 +17,33 @@ import AnimatedText from "@/components/AnimatedText";
 import ScrollReveal from "@/components/ScrollReveal";
 import MarqueeTicker from "@/components/MarqueeTicker";
 
-/* ──────────────── HERO — 3D PARALLAX ──────────────── */
-function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
+/* ──────────────── METRIC CARD — 3D TILT ──────────────── */
+interface MetricCardProps {
+  label: string;
+  value: string;
+  sub: string;
+  delay: number;
+}
+
+function MetricCard({ label, value, sub, delay }: MetricCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
 
-  const springConfig = { stiffness: 80, damping: 22, mass: 0.8 };
-  const x = useSpring(rawX, springConfig);
-  const y = useSpring(rawY, springConfig);
+  const x = useSpring(rawX, { stiffness: 300, damping: 25, mass: 0.5 });
+  const y = useSpring(rawY, { stiffness: 300, damping: 25, mass: 0.5 });
 
-  // Parallax layers — each at different depth
-  const glowX = useTransform(x, (v) => v * 0.3);
-  const glowY = useTransform(y, (v) => v * 0.3);
-  const labelX = useTransform(x, (v) => v * 0.5);
-  const labelY = useTransform(y, (v) => v * 0.5);
-  const titleX = useTransform(x, (v) => v * 0.9);
-  const titleY = useTransform(y, (v) => v * 0.9);
-  const bodyX = useTransform(x, (v) => v * 1.2);
-  const bodyY = useTransform(y, (v) => v * 1.2);
-  const cardsX = useTransform(x, (v) => v * -1.8);
-  const cardsY = useTransform(y, (v) => v * -1.4);
-
-  // 3D rotation on container
-  const rotateX = useTransform(y, (v) => v * -0.018);
-  const rotateY = useTransform(x, (v) => v * 0.018);
+  const rotateX = useTransform(y, [-0.5, 0.5], [12, -12]);
+  const rotateY = useTransform(x, [-0.5, 0.5], [-12, 12]);
+  const glowX = useTransform(x, [-0.5, 0.5], [0, 100]);
+  const glowY = useTransform(y, [-0.5, 0.5], [0, 100]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    const rect = containerRef.current?.getBoundingClientRect();
+    const rect = cardRef.current?.getBoundingClientRect();
     if (!rect) return;
-    rawX.set(e.clientX - rect.left - rect.width / 2);
-    rawY.set(e.clientY - rect.top - rect.height / 2);
+    rawX.set((e.clientX - rect.left) / rect.width - 0.5);
+    rawY.set((e.clientY - rect.top) / rect.height - 0.5);
   }
 
   function handleMouseLeave() {
@@ -55,79 +51,149 @@ function HeroSection() {
     rawY.set(0);
   }
 
-  const floatingCards = [
-    { label: "LIGHTHOUSE", value: "90+", sub: "Score garantido" },
-    { label: "CORE WEB VITALS", value: "✓", sub: "Aprovado" },
-    { label: "SECURITY GRADE", value: "A+", sub: "SSL + Headers" },
-  ];
-
   return (
-    <section
-      ref={containerRef}
+    <motion.div
+      ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ perspective: "1200px", perspectiveOrigin: "50% 50%" }}
-      className="relative min-h-screen flex items-center overflow-visible pt-20 section-padding"
+      initial={{ opacity: 0, x: 40 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay, duration: 0.5, ease: "easeOut" }}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+        perspective: "800px",
+        position: "relative",
+        background: "#141414",
+        border: "1px solid rgba(255,255,255,0.06)",
+        borderTop: "1px solid rgba(255,255,255,0.10)",
+        borderRadius: "2px",
+        padding: "20px 24px",
+        width: "220px",
+        cursor: "default",
+        willChange: "transform",
+      }}
     >
-      {/* Camada 0: Dual glow that follows mouse */}
-      <motion.div
-        style={{ x: glowX, y: glowY }}
-        className="absolute inset-0 pointer-events-none"
-        aria-hidden="true"
-      >
-        <div
-          className="absolute"
-          style={{
-            top: "10%",
-            right: "5%",
-            width: "700px",
-            height: "500px",
-            background:
-              "radial-gradient(ellipse at center, rgba(255,90,26,0.07) 0%, transparent 65%)",
-            filter: "blur(40px)",
-          }}
-        />
-        <div
-          className="absolute"
-          style={{
-            top: "20%",
-            right: "15%",
-            width: "300px",
-            height: "200px",
-            background:
-              "radial-gradient(ellipse at center, rgba(255,90,26,0.11) 0%, transparent 60%)",
-            filter: "blur(20px)",
-          }}
-        />
-      </motion.div>
-
-      {/* 3D container */}
+      {/* Reflexo de luz que segue o mouse dentro do card */}
       <motion.div
         style={{
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d",
+          position: "absolute",
+          inset: 0,
+          borderRadius: "2px",
+          background: useTransform(
+            [glowX, glowY],
+            ([gx, gy]) =>
+              `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,90,26,0.10) 0%, transparent 60%)`
+          ),
+          pointerEvents: "none",
         }}
-        className="relative w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center overflow-visible"
-      >
+      />
+
+      {/* Cantos decorativos — elevados no z */}
+      <span
+        style={{
+          position: "absolute",
+          top: "-1px",
+          left: "-1px",
+          width: "10px",
+          height: "10px",
+          borderTop: "2px solid rgba(255,90,26,0.5)",
+          borderLeft: "2px solid rgba(255,90,26,0.5)",
+          transform: "translateZ(4px)",
+        }}
+      />
+      <span
+        style={{
+          position: "absolute",
+          bottom: "-1px",
+          right: "-1px",
+          width: "10px",
+          height: "10px",
+          borderBottom: "2px solid rgba(255,90,26,0.5)",
+          borderRight: "2px solid rgba(255,90,26,0.5)",
+          transform: "translateZ(4px)",
+        }}
+      />
+
+      {/* Conteúdo elevado na frente */}
+      <div style={{ transform: "translateZ(12px)" }}>
+        <p
+          style={{
+            fontFamily: "JetBrains Mono, monospace",
+            fontSize: "10px",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "rgba(245,241,236,0.30)",
+            marginBottom: "8px",
+          }}
+        >
+          {label}
+        </p>
+        <p
+          style={{
+            fontFamily: "Sora, sans-serif",
+            fontSize: "28px",
+            fontWeight: 700,
+            color: "#FF5A1A",
+            lineHeight: 1,
+            marginBottom: "4px",
+          }}
+        >
+          {value}
+        </p>
+        <p
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 300,
+            fontSize: "13px",
+            color: "rgba(245,241,236,0.45)",
+          }}
+        >
+          {sub}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ──────────────── HERO ──────────────── */
+function HeroSection() {
+  return (
+    <section className="relative min-h-screen flex items-center overflow-visible pt-20 section-padding">
+      {/* Camada 0: Estático glow */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: "10%",
+          right: "5%",
+          width: "700px",
+          height: "500px",
+          background:
+            "radial-gradient(ellipse at center, rgba(255,90,26,0.09) 0%, transparent 65%)",
+          filter: "blur(40px)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Grid container */}
+      <div className="relative w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center overflow-visible">
         {/* Left column */}
         <div className="flex flex-col gap-6 overflow-visible">
-          {/* Camada 1: Label */}
-          <motion.div
-            style={{ x: labelX, y: labelY }}
-            className="overflow-visible"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.4 }}
-          >
-            <SectionLabel text="AGÊNCIA DE CRIAÇÃO DIGITAL // PREMIUM" />
-          </motion.div>
+          {/* Label */}
+          <div className="overflow-visible">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.4 }}
+            >
+              <SectionLabel text="AGÊNCIA DE CRIAÇÃO DIGITAL // PREMIUM" />
+            </motion.div>
+          </div>
 
-          {/* Camada 2: H1 — overflow visible for descenders */}
-          <motion.div
-            style={{ x: titleX, y: titleY }}
-            className="overflow-visible"
-          >
+          {/* H1 */}
+          <div className="overflow-visible">
             <h1
               className="font-sora font-bold text-text-primary leading-[1.02] tracking-[-0.03em] overflow-visible"
               style={{
@@ -150,13 +216,10 @@ function HeroSection() {
                 Seu próximo site deveria ser uma declaração.
               </motion.span>
             </h1>
-          </motion.div>
+          </div>
 
-          {/* Camada 3: Body + CTAs */}
-          <motion.div
-            style={{ x: bodyX, y: bodyY }}
-            className="flex flex-col gap-8 overflow-visible"
-          >
+          {/* Body + CTAs */}
+          <div className="flex flex-col gap-8 overflow-visible">
             <motion.p
               initial={{ opacity: 0, filter: "blur(8px)" }}
               animate={{ opacity: 1, filter: "blur(0px)" }}
@@ -195,43 +258,34 @@ function HeroSection() {
                 Ver cases
               </Link>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Camada 4: Metric cards — counter-parallax */}
-        <motion.div
-          style={{ x: cardsX, y: cardsY }}
+        {/* Right column: Metric cards — with independent 3D tilt */}
+        <div
           className="flex flex-col gap-3 lg:items-end overflow-visible"
+          style={{ perspective: "1000px" }}
         >
-          {floatingCards.map((card, i) => (
-            <motion.div
-              key={card.label}
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                delay: 1.3 + i * 0.15,
-                duration: 0.5,
-                ease: "easeOut",
-              }}
-              whileHover={{
-                scale: 1.04,
-                transition: { duration: 0.2 },
-              }}
-              className="tech-card tech-card-hover corner-decoration bg-bg-card p-5 w-full max-w-[220px]"
-            >
-              <span className="font-mono text-label uppercase text-text-tertiary tracking-[0.12em]">
-                {card.label}
-              </span>
-              <div className="font-sora font-bold text-[28px] text-accent leading-none mt-2">
-                {card.value}
-              </div>
-              <span className="font-inter font-light text-[13px] text-text-secondary">
-                {card.sub}
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
-      </motion.div>
+          <MetricCard
+            label="LIGHTHOUSE"
+            value="90+"
+            sub="Score garantido"
+            delay={1.3}
+          />
+          <MetricCard
+            label="CORE WEB VITALS"
+            value="✓"
+            sub="Aprovado"
+            delay={1.45}
+          />
+          <MetricCard
+            label="SECURITY GRADE"
+            value="A+"
+            sub="SSL + Headers"
+            delay={1.6}
+          />
+        </div>
+      </div>
     </section>
   );
 }
@@ -261,7 +315,13 @@ function ProblemSection() {
           <div className="flex flex-col gap-6">
             {/* Bad card */}
             <ScrollReveal direction="right" delay={0.1}>
-              <div className="tech-card bg-[rgba(255,60,60,0.04)] p-6" style={{ borderColor: "rgba(255,60,60,0.25)", borderTopColor: "rgba(255,60,60,0.35)" }}>
+              <div
+                className="tech-card bg-[rgba(255,60,60,0.04)] p-6"
+                style={{
+                  borderColor: "rgba(255,60,60,0.25)",
+                  borderTopColor: "rgba(255,60,60,0.35)",
+                }}
+              >
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-2 h-2 rounded-full bg-[rgba(255,60,60,0.6)]" />
                   <span className="font-mono text-label uppercase text-[rgba(255,60,60,0.6)] tracking-[0.12em]">
@@ -270,16 +330,28 @@ function ProblemSection() {
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">Lighthouse</span>
-                    <span className="font-sora font-bold text-[rgba(255,60,60,0.8)]">48</span>
+                    <span className="font-mono text-sm text-text-tertiary">
+                      Lighthouse
+                    </span>
+                    <span className="font-sora font-bold text-[rgba(255,60,60,0.8)]">
+                      48
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">Segurança</span>
-                    <span className="font-inter text-sm text-[rgba(255,60,60,0.8)]">Sem SSL</span>
+                    <span className="font-mono text-sm text-text-tertiary">
+                      Segurança
+                    </span>
+                    <span className="font-inter text-sm text-[rgba(255,60,60,0.8)]">
+                      Sem SSL
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">SEO</span>
-                    <span className="font-inter text-sm text-[rgba(255,60,60,0.8)]">Sem SEO</span>
+                    <span className="font-mono text-sm text-text-tertiary">
+                      SEO
+                    </span>
+                    <span className="font-inter text-sm text-[rgba(255,60,60,0.8)]">
+                      Sem SEO
+                    </span>
                   </div>
                 </div>
               </div>
@@ -287,7 +359,13 @@ function ProblemSection() {
 
             {/* Good card */}
             <ScrollReveal direction="right" delay={0.3}>
-              <div className="glow-card corner-decoration bg-bg-card p-6" style={{ borderColor: "rgba(255,90,26,0.3)", borderTopColor: "rgba(255,90,26,0.5)" }}>
+              <div
+                className="glow-card corner-decoration bg-bg-card p-6"
+                style={{
+                  borderColor: "rgba(255,90,26,0.3)",
+                  borderTopColor: "rgba(255,90,26,0.5)",
+                }}
+              >
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-2 h-2 rounded-full bg-accent" />
                   <span className="font-mono text-label uppercase text-accent tracking-[0.12em]">
@@ -296,16 +374,26 @@ function ProblemSection() {
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">Lighthouse</span>
+                    <span className="font-mono text-sm text-text-tertiary">
+                      Lighthouse
+                    </span>
                     <span className="font-sora font-bold text-accent">97</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">Segurança</span>
-                    <span className="font-inter text-sm text-accent">A+ Security</span>
+                    <span className="font-mono text-sm text-text-tertiary">
+                      Segurança
+                    </span>
+                    <span className="font-inter text-sm text-accent">
+                      A+ Security
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm text-text-tertiary">SEO</span>
-                    <span className="font-inter text-sm text-accent">SEO Técnico</span>
+                    <span className="font-mono text-sm text-text-tertiary">
+                      SEO
+                    </span>
+                    <span className="font-inter text-sm text-accent">
+                      SEO Técnico
+                    </span>
                   </div>
                 </div>
               </div>
@@ -414,131 +502,119 @@ function ProcessSection() {
   ];
 
   return (
-    <div style={{ minHeight: "180vh" }}>
-      <div style={{ position: "sticky", top: "0", paddingTop: "80px" }}>
-        <section
-          ref={sectionRef}
-          className="relative py-32 section-padding section-divider"
+    <section
+      ref={sectionRef}
+      className="relative py-32 section-padding section-divider"
+    >
+      <div className="mb-20">
+        <SectionLabel text="PROCESSO" />
+        <h2
+          className="font-sora font-bold text-text-primary"
+          style={{
+            fontSize: "clamp(36px, 5vw, 52px)",
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
+          }}
         >
-          <div className="mb-20">
-            <SectionLabel text="PROCESSO" />
-            <h2
-              className="font-sora font-bold text-text-primary"
-              style={{
-                fontSize: "clamp(36px, 5vw, 52px)",
-                lineHeight: 1.1,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Do briefing ao resultado.
-            </h2>
-          </div>
-
-          {/* Timeline */}
-          <div className="relative">
-            {/* Track base */}
-            <div
-              className="absolute hidden md:block"
-              style={{
-                top: "10px",
-                left: "0",
-                right: "0",
-                height: "1px",
-                background: "rgba(255,255,255,0.06)",
-              }}
-            />
-
-            {/* Animated progress line */}
-            <motion.div
-              className="absolute hidden md:block"
-              style={{
-                top: "10px",
-                left: "0",
-                right: "0",
-                height: "1px",
-                background: "linear-gradient(90deg, #FF5A1A, rgba(255,90,26,0.6))",
-                scaleX: lineScaleX,
-                transformOrigin: "left center",
-                boxShadow: "0 0 8px rgba(255,90,26,0.5)",
-              }}
-            />
-
-            {/* Steps */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-8 relative">
-              {steps.map((step, i) => {
-                const isActive = i <= activeStep;
-
-                return (
-                  <motion.div
-                    key={step.num}
-                    animate={{ opacity: isActive ? 1 : 0.25 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="flex flex-col items-center text-center"
-                  >
-                    {/* Dot */}
-                    <motion.div
-                      animate={{
-                        background: isActive
-                          ? "#FF5A1A"
-                          : "rgba(255,255,255,0.15)",
-                        boxShadow: isActive
-                          ? "0 0 0 4px rgba(255,90,26,0.15), 0 0 12px rgba(255,90,26,0.4)"
-                          : "none",
-                        scale: isActive ? 1.2 : 1,
-                      }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="hidden md:block mb-4 flex-shrink-0"
-                      style={{
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "50%",
-                        border: isActive
-                          ? "none"
-                          : "1px solid rgba(255,255,255,0.15)",
-                      }}
-                    />
-
-                    <span
-                      className="font-mono text-label tracking-[0.10em] mb-2"
-                      style={{
-                        color: isActive
-                          ? "#FF5A1A"
-                          : "rgba(245,241,236,0.30)",
-                        transition: "color 0.3s",
-                      }}
-                    >
-                      {step.num}
-                    </span>
-                    <span
-                      className="font-sora font-semibold text-[16px] mb-1.5"
-                      style={{
-                        color: isActive
-                          ? "#F5F1EC"
-                          : "rgba(245,241,236,0.30)",
-                        transition: "color 0.3s",
-                      }}
-                    >
-                      {step.title}
-                    </span>
-                    <span
-                      className="font-inter font-light text-[13px] leading-relaxed max-w-[120px]"
-                      style={{
-                        color: isActive
-                          ? "rgba(245,241,236,0.55)"
-                          : "rgba(245,241,236,0.18)",
-                        transition: "color 0.3s",
-                      }}
-                    >
-                      {step.desc}
-                    </span>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+          Do briefing ao resultado.
+        </h2>
       </div>
-    </div>
+
+      {/* Timeline */}
+      <div className="relative">
+        {/* Track base */}
+        <div
+          className="absolute hidden md:block"
+          style={{
+            top: "10px",
+            left: "0",
+            right: "0",
+            height: "1px",
+            background: "rgba(255,255,255,0.06)",
+          }}
+        />
+
+        {/* Animated progress line */}
+        <motion.div
+          className="absolute hidden md:block"
+          style={{
+            top: "10px",
+            left: "0",
+            right: "0",
+            height: "1px",
+            background: "linear-gradient(90deg, #FF5A1A, rgba(255,90,26,0.6))",
+            scaleX: lineScaleX,
+            transformOrigin: "left center",
+            boxShadow: "0 0 8px rgba(255,90,26,0.5)",
+          }}
+        />
+
+        {/* Steps */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 relative">
+          {steps.map((step, i) => {
+            const isActive = i <= activeStep;
+
+            return (
+              <motion.div
+                key={step.num}
+                animate={{ opacity: isActive ? 1 : 0.25 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="flex flex-col items-center text-center"
+              >
+                {/* Dot */}
+                <motion.div
+                  animate={{
+                    background: isActive ? "#FF5A1A" : "rgba(255,255,255,0.15)",
+                    boxShadow: isActive
+                      ? "0 0 0 4px rgba(255,90,26,0.15), 0 0 12px rgba(255,90,26,0.4)"
+                      : "none",
+                    scale: isActive ? 1.2 : 1,
+                  }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="hidden md:block mb-4 flex-shrink-0"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    borderRadius: "50%",
+                    border: isActive ? "none" : "1px solid rgba(255,255,255,0.15)",
+                  }}
+                />
+
+                <span
+                  className="font-mono text-label tracking-[0.10em] mb-2"
+                  style={{
+                    color: isActive ? "#FF5A1A" : "rgba(245,241,236,0.30)",
+                    transition: "color 0.3s",
+                  }}
+                >
+                  {step.num}
+                </span>
+                <span
+                  className="font-sora font-semibold text-[16px] mb-1.5"
+                  style={{
+                    color: isActive ? "#F5F1EC" : "rgba(245,241,236,0.30)",
+                    transition: "color 0.3s",
+                  }}
+                >
+                  {step.title}
+                </span>
+                <span
+                  className="font-inter font-light text-[13px] leading-relaxed max-w-[120px]"
+                  style={{
+                    color: isActive
+                      ? "rgba(245,241,236,0.55)"
+                      : "rgba(245,241,236,0.18)",
+                    transition: "color 0.3s",
+                  }}
+                >
+                  {step.desc}
+                </span>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }
 
