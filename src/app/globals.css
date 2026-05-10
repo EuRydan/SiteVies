@@ -153,34 +153,60 @@ main, header, footer, nav {
 }
 
 /* =============================================
-   BUTTON SYSTEM — clip-path angular cut
+   BUTTON SYSTEM — premium interactive states
    ============================================= */
 
-/* CTA primary button */
 .btn-primary {
   border-radius: 3px;
   background: #FF5A1A;
   border: 1px solid #FF5A1A;
   clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
-  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
+/* Shining slide effect */
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: all 0.6s ease;
+}
+
 .btn-primary:hover {
   background: #FF7A45;
   border-color: #FF7A45;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(255, 90, 26, 0.2);
 }
 
-/* Ghost/outline button */
+.btn-primary:hover::after {
+  left: 100%;
+}
+
 .btn-ghost {
   border-radius: 3px;
   border: 1px solid rgba(255,90,26,0.40);
   color: #FF5A1A;
   clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
   background: transparent;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
 .btn-ghost:hover {
-  background: rgba(255,90,26,0.08);
+  background: rgba(255,90,26,0.06);
   border-color: rgba(255,90,26,0.70);
+  transform: translateY(-2px);
 }
 
 /* =============================================
@@ -231,6 +257,7 @@ main, header, footer, nav {
   height: 6px;
   background: #FF5A1A;
   border-radius: 50%;
+  box-shadow: 0 0 10px #FF5A1A;
 }
 
 /* =============================================
@@ -254,4 +281,12 @@ main, header, footer, nav {
 /* Marquee hover pause */
 .marquee-container:hover .marquee-track {
   animation-play-state: paused;
+}
+
+/* Glass panel utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
 }

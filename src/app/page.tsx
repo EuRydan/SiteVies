@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   motion,
   useMotionValue,
@@ -11,14 +11,73 @@ import {
   MotionValue,
 } from "framer-motion";
 import Link from "next/link";
-import { Layout, Monitor, Settings, ArrowRight, Zap, ShieldCheck, Gauge, LucideIcon } from "lucide-react";
+import { Layout, Monitor, Settings, ArrowRight, Zap, ShieldCheck, Gauge, LucideIcon, Code2, Cpu, Globe } from "lucide-react";
 import SectionLabel from "@/components/SectionLabel";
 import GlowCard from "@/components/GlowCard";
 import AnimatedText from "@/components/AnimatedText";
 import ScrollReveal from "@/components/ScrollReveal";
 import MarqueeTicker from "@/components/MarqueeTicker";
 
-/* ──────────────── METRIC CARD — ENHANCED PREMIUM VERSION ──────────────── */
+/* ──────────────── MOUSE AURA DECORATION ──────────────── */
+function MouseAura() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const springY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  return (
+    <motion.div
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
+      style={{ opacity: 0.4 }}
+    >
+      <motion.div
+        className="absolute w-[600px] h-[600px] rounded-full"
+        style={{
+          x: springX,
+          y: springY,
+          translateX: "-50%",
+          translateY: "-50%",
+          background: "radial-gradient(circle, rgba(255,90,26,0.06) 0%, transparent 70%)",
+          filter: "blur(80px)",
+        }}
+      />
+    </motion.div>
+  );
+}
+
+/* ──────────────── GRID DECORATION BITS ──────────────── */
+function GridBits() {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20 z-0">
+      <div className="absolute top-[160px] left-[80px] text-[8px] font-mono text-white/20 select-none">
+        0xAF_772
+      </div>
+      <div className="absolute top-[480px] right-[120px] text-[8px] font-mono text-white/20 select-none">
+        DEPLOY_MODE: OPTIMIZED
+      </div>
+      <div className="absolute top-1/2 left-1/4 w-[1px] h-32 bg-gradient-to-b from-transparent via-white/5 to-transparent" />
+      <div className="absolute top-1/4 right-1/3 w-32 h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+      
+      {/* Plus signs at intersections */}
+      <div className="absolute top-[80px] left-[80px] w-2 h-2 text-white/10">+</div>
+      <div className="absolute top-[80px] right-[80px] w-2 h-2 text-white/10">+</div>
+      <div className="absolute bottom-[80px] left-[80px] w-2 h-2 text-white/10">+</div>
+      <div className="absolute bottom-[80px] right-[80px] w-2 h-2 text-white/10">+</div>
+    </div>
+  );
+}
+
+/* ──────────────── METRIC CARD ──────────────── */
 interface MetricCardProps {
   label: string;
   value: string;
@@ -79,13 +138,11 @@ function MetricCard({ label, value, sub, delay, icon: Icon }: MetricCardProps) {
       }}
       className="group"
     >
-      {/* Corner Accent */}
       <div className="absolute top-0 right-0 w-8 h-8 pointer-events-none overflow-hidden">
         <div className="absolute top-0 right-0 w-[1px] h-full bg-accent/30" />
         <div className="absolute top-0 right-0 h-[1px] w-full bg-accent/30" />
       </div>
 
-      {/* Dynamic Glow Overlay */}
       <motion.div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
         style={{
@@ -123,6 +180,8 @@ function MetricCard({ label, value, sub, delay, icon: Icon }: MetricCardProps) {
 function HeroSection() {
   return (
     <section className="relative min-h-[90vh] lg:min-h-screen flex items-center pt-24 lg:pt-20 section-padding overflow-hidden">
+      <GridBits />
+      
       {/* Background radial glow */}
       <div
         className="absolute top-1/4 right-0 w-[600px] h-[600px] opacity-15 blur-[120px] pointer-events-none"
@@ -184,7 +243,6 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* Enhanced Metric Cards Grid */}
         <div className="lg:col-span-5 flex flex-col gap-5 lg:items-end mb-16 lg:mb-0 relative z-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5 w-full lg:max-w-[240px]">
             <MetricCard label="LIGHTHOUSE" value="90+" sub="Score garantido" icon={Gauge} delay={1.3} />
@@ -277,22 +335,22 @@ function ProblemSection() {
 function ServicesSection() {
   const services = [
     {
-      icon: Layout,
+      icon: Globe,
       title: "Sites & Landing Pages",
-      desc: "Sites institucionais, landing pages e e-commerces com SEO técnico e design estratégico.",
-      tags: ["Next.js", "Headless", "SEO"],
+      desc: "Sites institucionais e landing pages de alta conversão construídos com SEO técnico e performance impecável.",
+      tags: ["Next.js", "Vercel", "SEO"],
     },
     {
-      icon: Monitor,
+      icon: Cpu,
       title: "Apps & Dashboards",
-      desc: "Plataformas SaaS, painéis de dados e sistemas internos com autenticação e escalabilidade.",
-      tags: ["React", "Supabase", "Auth"],
+      desc: "Sistemas web complexos, painéis administrativos e plataformas SaaS sob medida para sua operação.",
+      tags: ["React", "Supabase", "Dashboards"],
     },
     {
-      icon: Settings,
-      title: "Sistemas & Automações",
-      desc: "Integrações, automações e sistemas sob medida para o que seu negócio precisa rodar.",
-      tags: ["Webhooks", "n8n", "APIs"],
+      icon: Code2,
+      title: "Sistemas & APIs",
+      desc: "Desenvolvimento de APIs robustas e integrações de sistemas para automatizar processos de negócio.",
+      tags: ["Node.js", "Webhooks", "Integrations"],
     },
   ];
 
@@ -309,8 +367,10 @@ function ServicesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {services.map((service, i) => (
             <ScrollReveal key={service.title} delay={i * 0.1}>
-              <GlowCard className="group h-full flex flex-col !p-6 md:!p-8">
-                <service.icon size={28} className="text-accent mb-5" strokeWidth={1.5} />
+              <GlowCard className="group h-full flex flex-col !p-6 md:!p-8 hover:bg-white/[0.02] transition-colors duration-500">
+                <div className="w-12 h-12 rounded-full bg-accent/5 border border-accent/10 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform duration-500">
+                  <service.icon size={24} strokeWidth={1.5} />
+                </div>
                 <h3 className="font-sora font-bold text-card-title text-text-primary mb-3">
                   {service.title}
                 </h3>
@@ -372,9 +432,7 @@ function ProcessSection({ scrollProgress }: ProcessSectionProps) {
       </div>
 
       <div className="relative w-full max-w-6xl mx-auto">
-        {/* Track base desktop */}
         <div className="absolute hidden md:block top-2 left-0 right-0 h-[1px] bg-white/[0.05]" />
-        {/* Animated line desktop */}
         <motion.div
           className="absolute hidden md:block top-2 left-0 right-0 h-[1px] bg-accent origin-left"
           style={{ scaleX: lineScaleX }}
@@ -438,10 +496,12 @@ function CasesSection() {
                 <div className="group relative overflow-hidden tech-card aspect-[16/10]">
                   <div className="absolute inset-0 bg-bg-secondary group-hover:scale-105 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-bg-primary/60" />
-                  <div className="absolute bottom-0 p-6 md:p-8 w-full">
+                  <div className="absolute bottom-0 p-6 md:p-8 w-full z-10">
                     <span className="font-mono text-[10px] text-accent uppercase mb-2 block tracking-widest">{caseItem.type}</span>
                     <h3 className="font-sora font-bold text-xl md:text-2xl text-text-primary">{caseItem.title}</h3>
                   </div>
+                  {/* Decorative glass overlay on hover */}
+                  <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
               </Link>
             </ScrollReveal>
@@ -486,6 +546,7 @@ export default function HomePage() {
 
   return (
     <>
+      <MouseAura />
       <HeroSection />
       <MarqueeTicker />
       <ProblemSection />
