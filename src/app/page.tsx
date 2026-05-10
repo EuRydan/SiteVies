@@ -424,14 +424,18 @@ function ServiceCard({ service, index }: ServiceCardProps) {
     offset: ["start end", "start start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
+  const scale = useTransform(scrollYProgress, [0, 1], [0.95, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
 
   return (
     <div
       ref={cardRef}
-      className="sticky w-full mb-[10vh]"
-      style={{ top: `${15 + index * 2}vh` }}
+      className="sticky w-full"
+      style={{ 
+        top: `${80 + index * 40}px`,
+        zIndex: index + 10,
+        paddingBottom: "100px" 
+      }}
     >
       <motion.div style={{ scale, opacity }} className="overflow-visible">
         <GlowCard className="p-8 md:p-12 min-h-[500px] flex flex-col md:flex-row gap-12 group transition-all duration-500 hover:border-accent/40">
@@ -552,7 +556,7 @@ function ServicesSection() {
           </p>
         </ScrollReveal>
 
-        <div className="relative pb-32">
+        <div className="relative pb-[20vh] space-y-[20vh]">
           {services.map((service, i) => (
             <ServiceCard key={service.title} service={service} index={i} />
           ))}
