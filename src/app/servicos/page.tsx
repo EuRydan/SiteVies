@@ -124,7 +124,7 @@ function ServiceCard({ service, index }: ServiceCardProps) {
   });
 
   const scale = useTransform(scrollYProgress, [0, 1], [0.95, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 1], [0, 1, 1]);
 
   return (
     <div
@@ -137,7 +137,7 @@ function ServiceCard({ service, index }: ServiceCardProps) {
       }}
     >
       <motion.div style={{ scale, opacity }} className="overflow-visible">
-        <GlowCard className="!p-8 md:!p-12 transition-all duration-500 hover:border-accent/40" tilt={false}>
+        <GlowCard className="!p-8 md:!p-12 transition-all duration-500 hover:border-accent/40 bg-bg-primary" tilt={false}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
               <h3 className="font-sora font-bold text-[32px] md:text-[40px] text-text-primary mb-6 leading-tight">
