@@ -501,7 +501,7 @@ function ProcessSection({ scrollProgress }: ProcessSectionProps) {
   ];
 
   return (
-    <section className="w-full relative py-12 section-padding overflow-visible">
+    <div className="w-full max-w-7xl mx-auto section-padding overflow-visible">
       <div className="mb-12 md:mb-20">
         <SectionLabel text="PROCESSO" />
         <h2
@@ -639,7 +639,7 @@ function ProcessSection({ scrollProgress }: ProcessSectionProps) {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -769,14 +769,15 @@ export default function HomePage() {
       <ServicesSection />
 
       {/* Wrapper sticky — altura define quanto tempo a tela fica "presa" */}
-      <div ref={processRef} style={{ height: "300vh", position: "relative" }}>
+      <div ref={processRef} style={{ height: "350vh", position: "relative" }}>
         <div
           style={{
             position: "sticky",
             top: "0",
             height: "100vh",
             display: "flex",
-            alignItems: "center",
+            flexDirection: "column",
+            justifyContent: "center",
             overflow: "hidden",
           }}
         >

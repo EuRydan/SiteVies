@@ -65,7 +65,7 @@ export default function SobrePage() {
             <p className="font-inter font-light text-body text-text-secondary">
               Decidimos fazer diferente. Cada projeto nosso é construído com as mesmas
               ferramentas que empresas de tecnologia de ponta usam. Next.js, TypeScript,
-              Supabase, Vercel — porque acreditamos que pequenos e médios negócios
+              Supabase, Vercel, porque acreditamos que pequenos e médios negócios
               merecem a mesma qualidade técnica das startups do Vale do Silício.
             </p>
             <p className="font-inter font-light text-body text-text-secondary">
