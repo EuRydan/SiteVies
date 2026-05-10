@@ -11,7 +11,7 @@ import {
   MotionValue,
 } from "framer-motion";
 import Link from "next/link";
-import { Layout, Monitor, Settings, ArrowRight } from "lucide-react";
+import { Layout, Monitor, Settings, ArrowRight, Check } from "lucide-react";
 import SectionLabel from "@/components/SectionLabel";
 import GlowCard from "@/components/GlowCard";
 import AnimatedText from "@/components/AnimatedText";
@@ -406,67 +406,155 @@ function ProblemSection() {
   );
 }
 
-/* ──────────────── SERVIÇOS PREVIEW ──────────────── */
+/* ──────────────── SERVIÇOS STACKED CARDS ──────────────── */
+interface ServiceCardProps {
+  service: {
+    title: string;
+    desc: string;
+    tags: string[];
+    deliverables: string[];
+  };
+  index: number;
+}
+
+function ServiceCard({ service, index }: ServiceCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "start start"],
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
+
+  return (
+    <div
+      ref={cardRef}
+      className="sticky w-full mb-[10vh]"
+      style={{ top: `${15 + index * 2}vh` }}
+    >
+      <motion.div style={{ scale, opacity }} className="overflow-visible">
+        <GlowCard className="p-8 md:p-12 min-h-[500px] flex flex-col md:flex-row gap-12 group transition-all duration-500 hover:border-accent/40">
+          <div className="flex-1">
+            <h3 className="font-sora font-bold text-[32px] md:text-[40px] text-text-primary mb-6 leading-tight group-hover:text-accent transition-colors">
+              {service.title}
+            </h3>
+            <p className="font-inter font-light text-body text-text-secondary mb-10 max-w-lg leading-relaxed">
+              {service.desc}
+            </p>
+
+            <div className="flex flex-wrap gap-2 mb-10">
+              {service.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-4 py-1.5 bg-accent-muted text-accent font-mono text-[11px] font-bold uppercase tracking-widest border border-accent/10"
+                  style={{ borderRadius: "2px" }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <Link
+              href="/contato"
+              className="inline-flex items-center gap-2 text-accent font-inter font-medium text-cta group/link"
+            >
+              Solicitar orçamento
+              <ArrowRight
+                size={16}
+                className="transition-transform group-hover/link:translate-x-1"
+              />
+            </Link>
+          </div>
+
+          <div className="flex-1 bg-white/[0.02] border border-white/[0.05] p-8 md:p-10 rounded-[2px]">
+            <span className="font-mono text-label text-text-tertiary uppercase tracking-widest block mb-8">
+              ENTREGÁVEIS
+            </span>
+            <ul className="space-y-4">
+              {service.deliverables.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <Check
+                    size={16}
+                    className="text-accent mt-1 flex-shrink-0"
+                    strokeWidth={3}
+                  />
+                  <span className="font-inter font-light text-[15px] text-text-secondary">
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </GlowCard>
+      </motion.div>
+    </div>
+  );
+}
+
 function ServicesSection() {
   const services = [
     {
-      icon: Layout,
       title: "Sites & Landing Pages",
-      desc: "Sites institucionais, landing pages e e-commerces com SEO técnico e design estratégico.",
-      tags: ["Next.js", "CMS Headless", "Core Web Vitals", "SEO"],
+      desc: "Criamos sites institucionais, landing pages de alta conversão e e-commerces performáticos com SEO técnico avançado e design estratégico que diferencia sua marca.",
+      tags: ["NEXT.JS", "REACT", "TAILWIND CSS", "SANITY CMS", "VERCEL"],
+      deliverables: [
+        "Design responsivo mobile-first",
+        "SEO técnico completo (Schema, sitemap, meta tags)",
+        "Core Web Vitals otimizados",
+        "CMS headless para autonomia de conteúdo",
+        "Certificado SSL e headers de segurança",
+        "Analytics e tracking configurados",
+      ],
     },
     {
-      icon: Monitor,
       title: "Apps & Dashboards",
-      desc: "Plataformas SaaS, painéis de dados e sistemas internos com autenticação robusta e escalabilidade.",
-      tags: ["React", "Supabase", "Auth", "API REST"],
+      desc: "Desenvolvemos plataformas SaaS, painéis de dados interativos e sistemas internos com autenticação robusta e escalabilidade total.",
+      tags: ["REACT", "SUPABASE", "AUTH", "API REST", "NODE.JS"],
+      deliverables: [
+        "Autenticação segura (OAuth, JWT, MFA)",
+        "Dashboard com visualização de dados",
+        "API REST documentada",
+        "Banco de dados relacional (PostgreSQL)",
+        "Infraestrutura escalável",
+        "Integração com serviços externos",
+      ],
     },
     {
-      icon: Settings,
       title: "Sistemas & Automações",
-      desc: "Integrações, automações e sistemas sob medida para o que seu negócio precisa rodar.",
-      tags: ["Webhooks", "n8n", "APIs", "Automação"],
+      desc: "Integrações inteligentes, automações de processos e sistemas sob medida para o que seu negócio precisa rodar sem atritos.",
+      tags: ["WEBHOOKS", "N8N", "APIS", "AUTOMAÇÃO", "INTEGRAÇÃO"],
+      deliverables: [
+        "Automação de fluxos de trabalho",
+        "Integração entre plataformas (Zapier/n8n)",
+        "Sistemas de notificação multicanal",
+        "Processamento de dados em tempo real",
+        "Monitoramento de erros e uptime",
+        "Documentação técnica e treinamento",
+      ],
     },
   ];
 
   return (
-    <section className="section-gap relative z-10 section-divider">
-      <div className="max-w-7xl mx-auto section-padding">
+    <section className="section-gap relative z-10 section-divider overflow-visible">
+      <div className="max-w-7xl mx-auto section-padding pb-0 overflow-visible">
         <SectionLabel text="SERVIÇOS" />
         <AnimatedText
-          text="O que a Viés constrói para você."
+          text="Tudo que seu negócio precisa no digital."
           tag="h2"
-          className="font-sora font-bold text-section text-text-primary mb-12"
+          className="font-sora font-bold text-section text-text-primary mb-6"
         />
+        <ScrollReveal>
+          <p className="font-inter font-light text-body text-text-secondary max-w-2xl mb-24">
+            De landing pages de alta conversão a sistemas complexos — cada projeto é
+            construído com obsessão por qualidade, performance e resultado
+            mensurável.
+          </p>
+        </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="relative pb-32">
           {services.map((service, i) => (
-            <ScrollReveal key={service.title} delay={i * 0.15}>
-              <GlowCard className="group h-full">
-                <service.icon
-                  size={32}
-                  className="text-accent mb-6"
-                  strokeWidth={1.5}
-                />
-                <h3 className="font-sora font-bold text-card-title text-text-primary mb-3">
-                  {service.title}
-                </h3>
-                <p className="font-inter font-light text-sm text-text-secondary mb-6 leading-relaxed">
-                  {service.desc}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {service.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 bg-accent-muted text-accent font-mono text-[10px] uppercase tracking-wider"
-                      style={{ borderRadius: "2px" }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </GlowCard>
-            </ScrollReveal>
+            <ServiceCard key={service.title} service={service} index={i} />
           ))}
         </div>
       </div>
