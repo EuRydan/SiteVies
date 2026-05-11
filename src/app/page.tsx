@@ -59,12 +59,6 @@ function MouseAura() {
 function GridBits() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20 z-0">
-      <div className="absolute top-[160px] left-[80px] text-[8px] font-mono text-white/20 select-none">
-        0xAF_772
-      </div>
-      <div className="absolute top-[480px] right-[120px] text-[8px] font-mono text-white/20 select-none">
-        DEPLOY_MODE: OPTIMIZED
-      </div>
       <div className="absolute top-1/2 left-1/4 w-[1px] h-32 bg-gradient-to-b from-transparent via-white/5 to-transparent" />
       <div className="absolute top-1/4 right-1/3 w-32 h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent" />
       
