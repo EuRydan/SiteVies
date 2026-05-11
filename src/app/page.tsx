@@ -254,18 +254,18 @@ function HeroSection() {
 /* ──────────────── PROBLEMA / PROPOSTA ──────────────── */
 function ProblemSection() {
   return (
-    <section className="section-gap relative z-10 section-divider">
+    <section className="relative z-10 bg-accent py-24 md:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto section-padding">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="max-w-xl">
-            <SectionLabel text="O PROBLEMA" />
-            <AnimatedText
-              text="A maioria dos sites são caros e lentos."
-              tag="h2"
-              className="font-sora font-bold text-section text-text-primary mb-6 md:mb-8"
-            />
+            <div className="inline-block px-3 py-1 bg-bg-primary/10 border border-bg-primary/20 rounded-[2px] mb-6">
+              <span className="font-mono text-[10px] tracking-[0.2em] text-bg-primary uppercase">O PROBLEMA</span>
+            </div>
+            <h2 className="font-sora font-bold text-section text-bg-primary mb-6 md:mb-8 leading-tight">
+              A maioria dos sites são caros e lentos.
+            </h2>
             <ScrollReveal>
-              <p className="font-inter font-light text-body text-text-secondary leading-relaxed">
+              <p className="font-inter font-medium text-body text-bg-primary/80 leading-relaxed">
                 Agências cobram premium e entregam WordPress lento, sem SEO real,
                 sem segurança e sem estratégia. Nós fazemos diferente.
               </p>
@@ -274,21 +274,21 @@ function ProblemSection() {
 
           <div className="flex flex-col gap-4 md:gap-6 w-full max-w-lg lg:ml-auto">
             <ScrollReveal direction="right" delay={0.1}>
-              <div className="tech-card bg-[rgba(255,60,60,0.03)] p-6 md:p-8 border-[rgba(255,60,60,0.15)]">
+              <div className="tech-card bg-bg-primary/5 p-6 md:p-8 border-bg-primary/10 shadow-none">
                 <div className="flex items-center gap-2 mb-6">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[rgba(255,60,60,0.5)]" />
-                  <span className="font-mono text-label uppercase text-[rgba(255,60,60,0.5)]">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-600" />
+                  <span className="font-mono text-label uppercase text-red-600 font-bold">
                     SITE COMUM
                   </span>
                 </div>
                 <div className="space-y-3">
                   {[
-                    { l: "Lighthouse", v: "48", c: "text-[rgba(255,60,60,0.8)]" },
-                    { l: "Segurança", v: "Sem SSL", c: "text-[rgba(255,60,60,0.8)]" },
-                    { l: "SEO", v: "Básico", c: "text-[rgba(255,60,60,0.8)]" },
+                    { l: "Lighthouse", v: "48", c: "text-red-700" },
+                    { l: "Segurança", v: "Sem SSL", c: "text-red-700" },
+                    { l: "SEO", v: "Básico", c: "text-red-700" },
                   ].map((row) => (
-                    <div key={row.l} className="flex justify-between items-center border-b border-white/[0.03] pb-2">
-                      <span className="font-mono text-[10px] text-text-tertiary uppercase">{row.l}</span>
+                    <div key={row.l} className="flex justify-between items-center border-b border-bg-primary/10 pb-2">
+                      <span className="font-mono text-[10px] text-bg-primary/60 uppercase">{row.l}</span>
                       <span className={`font-sora font-bold ${row.c}`}>{row.v}</span>
                     </div>
                   ))}
@@ -297,7 +297,8 @@ function ProblemSection() {
             </ScrollReveal>
 
             <ScrollReveal direction="right" delay={0.3}>
-              <div className="glow-card corner-decoration bg-bg-card p-6 md:p-8 border-accent/20">
+              <div className="bg-bg-primary p-6 md:p-8 border-none rounded-[1px] shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-accent/10 blur-2xl rounded-full" />
                 <div className="flex items-center gap-2 mb-6">
                   <div className="w-1.5 h-1.5 rounded-full bg-accent" />
                   <span className="font-mono text-label uppercase text-accent">
@@ -306,11 +307,11 @@ function ProblemSection() {
                 </div>
                 <div className="space-y-3">
                   {[
-                    { l: "Lighthouse", v: "97+", c: "text-accent" },
-                    { l: "Segurança", v: "A+ Security", c: "text-accent" },
-                    { l: "SEO", v: "Técnico Real", c: "text-accent" },
+                    { l: "Lighthouse", v: "97+", c: "text-white" },
+                    { l: "Segurança", v: "A+ Security", c: "text-white" },
+                    { l: "SEO", v: "Técnico Real", c: "text-white" },
                   ].map((row) => (
-                    <div key={row.l} className="flex justify-between items-center border-b border-white/[0.05] pb-2">
+                    <div key={row.l} className="flex justify-between items-center border-b border-white/10 pb-2">
                       <span className="font-mono text-[10px] text-text-tertiary uppercase">{row.l}</span>
                       <span className={`font-sora font-bold ${row.c}`}>{row.v}</span>
                     </div>
