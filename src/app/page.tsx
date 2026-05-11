@@ -331,20 +331,20 @@ function ServicesSection() {
   const services = [
     {
       icon: Globe,
-      title: "Sites & Landing Pages",
+      title: "Sites, Landing Pages e Apps",
       desc: "Sites institucionais e landing pages de alta conversão construídos com SEO técnico e performance impecável.",
       tags: ["Next.js", "Vercel", "SEO"],
     },
     {
       icon: Cpu,
-      title: "Apps & Dashboards",
+      title: "Dashboards",
       desc: "Sistemas web complexos, painéis administrativos e plataformas SaaS sob medida para sua operação.",
       tags: ["React", "Supabase", "Dashboards"],
     },
     {
       icon: Code2,
-      title: "Sistemas & APIs",
-      desc: "Desenvolvimento de APIs robustas e integrações de sistemas para automatizar processos de negócio.",
+      title: "Sistemas",
+      desc: "Desenvolvimento e integrações de sistemas para automatizar processos de negócio.",
       tags: ["Node.js", "Webhooks", "Integrations"],
     },
   ];
