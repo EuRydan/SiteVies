@@ -72,18 +72,18 @@ export default function SobrePage() {
         <ScrollReveal>
           <div className="max-w-3xl space-y-6">
             <p className="font-inter font-light text-sm md:text-body text-text-secondary leading-relaxed">
-              A Viés Studios nasceu para fechar a distância entre o que agências
+              A Vies Studios nasceu para fechar a distância entre o que agências comuns
               prometem e o que realmente entregam. Sites lentos, sem SEO e sem segurança
               não deveriam ser vendidos como &ldquo;premium&rdquo;.
             </p>
             <p className="font-inter font-light text-sm md:text-body text-text-secondary leading-relaxed">
-              Decidimos fazer diferente. Cada projeto nosso é construído com as mesmas
-              tecnologias que startups do Vale do Silício usam — Next.js, TypeScript e Vercel —
-              porque acreditamos que cada negócio merece excelência técnica.
+              Decidimos fazer diferente. Cada projeto nosso é construído com as melhores
+              tecnologias e segurança que grandes empresas usam, porque acreditamos que
+              cada negócio merece excelência técnica.
             </p>
             <p className="font-inter font-light text-sm md:text-body text-text-secondary leading-relaxed">
-              Nosso foco é simples: interfaces que impressionam, código que performa
-              e estratégia que realmente posiciona sua marca no topo.
+              Não trabalhamos com templates ou soluções prontas. Cada projeto é único,
+              construído do zero para atender às necessidades específicas de cada cliente.
             </p>
           </div>
         </ScrollReveal>
