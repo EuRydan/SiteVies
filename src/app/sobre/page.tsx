@@ -1,6 +1,20 @@
 "use client";
 
 import { Award, Eye, Code, Shield } from "lucide-react";
+import { 
+  SiNextdotjs, 
+  SiReact, 
+  SiTypescript, 
+  SiTailwindcss, 
+  SiFramer, 
+  SiSupabase, 
+  SiSanity, 
+  SiVercel, 
+  SiPostgresql, 
+  SiFigma, 
+  SiNodedotjs, 
+  SiN8N 
+} from "react-icons/si";
 import SectionLabel from "@/components/SectionLabel";
 import AnimatedText from "@/components/AnimatedText";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -30,18 +44,18 @@ const values = [
 ];
 
 const techStack = [
-  { name: "Next.js", use: "Framework" },
-  { name: "React", use: "UI Library" },
-  { name: "TypeScript", use: "Tipagem" },
-  { name: "Tailwind CSS", use: "Estilo" },
-  { name: "Framer Motion", use: "Animação" },
-  { name: "Supabase", use: "Backend" },
-  { name: "Sanity", use: "CMS" },
-  { name: "Vercel", use: "Cloud" },
-  { name: "PostgreSQL", use: "Database" },
-  { name: "Figma", use: "Design" },
-  { name: "Node.js", use: "Runtime" },
-  { name: "n8n", use: "Automação" },
+  { name: "Next.js", use: "Framework", icon: SiNextdotjs },
+  { name: "React", use: "UI Library", icon: SiReact },
+  { name: "TypeScript", use: "Tipagem", icon: SiTypescript },
+  { name: "Tailwind CSS", use: "Estilo", icon: SiTailwindcss },
+  { name: "Framer Motion", use: "Animação", icon: SiFramer },
+  { name: "Supabase", use: "Backend", icon: SiSupabase },
+  { name: "Sanity", use: "CMS", icon: SiSanity },
+  { name: "Vercel", use: "Cloud", icon: SiVercel },
+  { name: "PostgreSQL", use: "Database", icon: SiPostgresql },
+  { name: "Figma", use: "Design", icon: SiFigma },
+  { name: "Node.js", use: "Runtime", icon: SiNodedotjs },
+  { name: "n8n", use: "Automação", icon: SiN8N },
 ];
 
 export default function SobrePage() {
@@ -115,9 +129,7 @@ export default function SobrePage() {
             <ScrollReveal key={tech.name} delay={i * 0.05}>
               <div className="bg-bg-card tech-card tech-card-hover p-4 md:p-6 group h-full">
                 <div className="w-8 h-8 md:w-10 md:h-10 bg-accent-muted flex items-center justify-center mb-3 md:mb-4 group-hover:bg-accent/20 transition-colors" style={{ borderRadius: "1px" }}>
-                  <span className="font-sora font-bold text-accent text-xs md:text-sm">
-                    {tech.name.charAt(0)}
-                  </span>
+                  <tech.icon className="text-accent text-lg md:text-xl group-hover:scale-110 transition-transform duration-300" />
                 </div>
                 <h4 className="font-inter font-medium text-xs md:text-sm text-text-primary mb-1">
                   {tech.name}

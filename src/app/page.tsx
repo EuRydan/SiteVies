@@ -189,7 +189,7 @@ function HeroSection() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <SectionLabel text="AGÊNCIA DE CRIAÇÃO DIGITAL // PREMIUM" />
+            <SectionLabel text="AGÊNCIA TECH & DESIGN" />
           </motion.div>
 
           <h1 className="font-sora font-bold text-hero text-text-primary">
@@ -210,8 +210,7 @@ function HeroSection() {
               transition={{ delay: 0.9, duration: 0.6 }}
               className="font-inter font-light text-body text-text-secondary max-w-[560px] leading-relaxed"
             >
-              Criamos websites, aplicações e sistemas que combinam design de alto
-              impacto, segurança em profundidade e SEO que realmente posiciona.
+              Criamos websites, aplicações e sistemas que combinam design, performance, segurança e SEO.
             </motion.p>
 
             <motion.div
@@ -266,7 +265,7 @@ function ProblemSection() {
             </h2>
             <ScrollReveal>
               <p className="font-inter font-medium text-body text-bg-primary/80 leading-relaxed">
-                Agências cobram premium e entregam WordPress lento, sem SEO real,
+                Agências cobram premium e entregam WordPress lento, SEO fraco,
                 sem segurança e sem estratégia. Nós fazemos diferente.
               </p>
             </ScrollReveal>
@@ -302,7 +301,7 @@ function ProblemSection() {
                 <div className="flex items-center gap-2 mb-6">
                   <div className="w-1.5 h-1.5 rounded-full bg-accent" />
                   <span className="font-mono text-label uppercase text-accent">
-                    SITE VIÉS
+                    SITE VIES
                   </span>
                 </div>
                 <div className="space-y-3">

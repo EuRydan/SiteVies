@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Sora } from "next/font/google";
+import { Sora } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const inter = Inter({
+const inter = Sora({
   subsets: ["latin"],
   weight: ["300", "400", "500"],
-  variable: "--font-inter",
+  variable: "--font-sora",
   display: "swap",
   preload: true,
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const jetbrainsMono = Sora({
   subsets: ["latin"],
   weight: ["400"],
-  variable: "--font-jetbrains",
+  variable: "--font-sora",
   display: "swap",
   preload: true,
 });
@@ -31,11 +31,11 @@ const sora = Sora({
 export const metadata: Metadata = {
   metadataBase: new URL("https://viesstudios.com.br"),
   title: {
-    default: "Viés Studios — Agência de Criação Digital Premium",
-    template: "%s | Viés Studios",
+    default: "Viés Studios — Agência de Criação Digital",
+    template: "%s | Vies Studios",
   },
   description:
-    "Criamos websites, aplicações e sistemas que combinam design de alto impacto, segurança em profundidade e SEO que realmente posiciona. Agência premium no Rio de Janeiro.",
+    "Criamos websites, aplicações e sistemas que combinam design, performance, segurança e SEO que realmente posiciona.",
   keywords: [
     "agência digital",
     "criação de sites",
@@ -45,28 +45,28 @@ export const metadata: Metadata = {
     "SEO técnico",
     "Rio de Janeiro",
   ],
-  authors: [{ name: "Viés Studios" }],
-  creator: "Viés Studios",
+  authors: [{ name: "Vies Studios" }],
+  creator: "Vies Studios",
   openGraph: {
     type: "website",
     locale: "pt_BR",
     url: "https://viesstudios.com.br",
     siteName: "Viés Studios",
-    title: "Viés Studios — Agência de Criação Digital Premium",
+    title: "Viés Studios — Agência de Criação Digital",
     description:
-      "Criamos websites, aplicações e sistemas que combinam design de alto impacto, segurança em profundidade e SEO que realmente posiciona.",
+      "Criamos websites, aplicações e sistemas que combinam design, performance, segurança e SEO que realmente posiciona.",
     images: [
       {
         url: "/og/home.png",
         width: 1200,
         height: 630,
-        alt: "Viés Studios",
+        alt: "Vies Studios",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Viés Studios — Agência de Criação Digital Premium",
+    title: "Vies Studios — Agência de Criação Digital",
     description:
       "Criamos websites premium com design de alto impacto, segurança e SEO técnico.",
   },
@@ -87,10 +87,10 @@ export default function RootLayout({
   const schemaOrg = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Viés Studios",
+    name: "Vies Studios",
     url: "https://viesstudios.com.br",
     description:
-      "Agência de criação de websites premium, apps e sistemas digitais.",
+      "Agência de criação de websites, apps e sistemas.",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Rio de Janeiro",
