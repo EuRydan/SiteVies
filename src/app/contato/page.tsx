@@ -17,6 +17,7 @@ const contactSchema = z.object({
   projectType: z.string().min(1, "Selecione um tipo de projeto"),
   budget: z.string().min(1, "Selecione um orçamento estimado"),
   message: z.string().min(10, "Mensagem deve ter pelo menos 10 caracteres"),
+  honeypot: z.string(),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -72,6 +73,9 @@ export default function ContatoPage() {
     reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
+    defaultValues: {
+      honeypot: "",
+    },
   });
 
   const onSubmit = async (data: ContactFormData) => {
@@ -134,6 +138,22 @@ export default function ContatoPage() {
           <div className="lg:col-span-3">
             <ScrollReveal>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Honeypot — invisível para humanos, bots preenchem automaticamente */}
+                <input
+                  type="text"
+                  autoComplete="off"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    left: "-9999px",
+                    width: "1px",
+                    height: "1px",
+                    opacity: 0,
+                    pointerEvents: "none",
+                  }}
+                  {...register("honeypot")}
+                />
                 {/* Name */}
                 <div>
                   <label className="font-mono text-label uppercase text-text-tertiary tracking-[0.12em] mb-2 block">
