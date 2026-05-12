@@ -121,14 +121,6 @@ export default function Footer() {
                 >
                   LinkedIn
                 </a>
-                <a
-                  href="https://github.com/viesstudios"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-inter text-sm text-text-secondary hover:text-accent transition-colors"
-                >
-                  GitHub
-                </a>
               </li>
             </ul>
           </div>
