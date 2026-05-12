@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Mail, MapPin, Clock, ChevronDown } from "lucide-react";
+import { FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import SectionLabel from "@/components/SectionLabel";
 import AnimatedText from "@/components/AnimatedText";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -354,21 +355,26 @@ export default function ContatoPage() {
                     REDES SOCIAIS
                   </h4>
                   <div className="flex gap-4">
-                    {[
-                      { label: "Instagram", href: "https://instagram.com/viesstudios" },
-                      { label: "LinkedIn", href: "https://linkedin.com/company/viesstudios" },
-                      { label: "GitHub", href: "https://github.com/viesstudios" },
-                    ].map((link) => (
-                      <a
-                        key={link.label}
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2 bg-bg-card font-inter text-sm text-text-secondary hover:text-text-primary transition-all duration-300 tech-card tech-card-hover"
-                      >
-                        {link.label}
-                      </a>
-                    ))}
+                    <a
+                      href="https://instagram.com/viesstudios"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram"
+                      className="w-10 h-10 bg-bg-card flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent-muted transition-all duration-300 tech-card tech-card-hover"
+                      style={{ borderRadius: "2px" }}
+                    >
+                      <FaInstagram size={18} />
+                    </a>
+                    <a
+                      href="https://linkedin.com/company/viesstudios"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                      className="w-10 h-10 bg-bg-card flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent-muted transition-all duration-300 tech-card tech-card-hover"
+                      style={{ borderRadius: "2px" }}
+                    >
+                      <FaLinkedinIn size={18} />
+                    </a>
                   </div>
                 </div>
 
